@@ -3,8 +3,8 @@
     <PropertyGroup>
         <SolutionDirectory>$(WORKSPACE)</SolutionDirectory>
         <SolutionFile>$(SolutionDirectory)\freebyUtil.Common.sln</SolutionFile>
-        <ApplicationName Condition="$(JOB_NAME.StartsWith('Build '))">$(JOB_NAME.Substring(6))</ApplicationName>
-        <ApplicationName Condition="!$(JOB_NAME.StartsWith('Build '))">$(JOB_NAME)</ApplicationName>
+        <ApplicationName Condition="$(JOB_NAME.StartsWith('BUILD - '))">$(JOB_NAME.Substring(8))</ApplicationName>
+        <ApplicationName Condition="!$(JOB_NAME.StartsWith('BUILD - '))">$(JOB_NAME)</ApplicationName>
         <IncludeBinariesInSourceZip>true</IncludeBinariesInSourceZip>
         <MainlineVersionOverride>16.0</MainlineVersionOverride>
     </PropertyGroup>
