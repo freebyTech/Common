@@ -12,7 +12,7 @@
         <CallTarget Targets="MsgAppBuildStart" />
         <CallTarget Targets="ShowGitInfo" />
 
-        <Exec Command="CopyLibs_Build.bat &quot;$(BASE_REPO_HOME)&quot;" WorkingDirectory="$(SolutionDirectory)" />
+        <Exec Command="CopyLibs_Build.bat &quot;$(BASE_REPO_HOME)&quot;" WorkingDirectory="$(SolutionDirectory)" IgnoreExitCode="true" />
         <Exec Command="nuget.exe restore &quot;$(SolutionFile)&quot;" WorkingDirectory="$(SolutionDirectory)\.build" />
         <!-- 
             MAJOR.MINOR VERSION OVERRIDE NOTE: 
