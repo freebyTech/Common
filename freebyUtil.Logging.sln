@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "freebyUtil.Common", "freebyUtil.Common\freebyUtil.Common.csproj", "{6C39E4A3-CFE6-4A8D-B3B1-675936C5A38C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{1888DFD8-6099-4F1F-8320-83A523440201}"
+	ProjectSection(SolutionItems) = preProject
+		.build\freebyUtil.Logging.msbuild.xml = .build\freebyUtil.Logging.msbuild.xml
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "freebyUtil.Logging", "freebyUtil.Logging\freebyUtil.Logging.csproj", "{60BF7AC7-2515-47FE-A36E-FB7D9AA78915}"
 EndProject
@@ -32,8 +35,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{60BF7AC7-2515-47FE-A36E-FB7D9AA78915} = {1888DFD8-6099-4F1F-8320-83A523440201}
 	EndGlobalSection
 EndGlobal

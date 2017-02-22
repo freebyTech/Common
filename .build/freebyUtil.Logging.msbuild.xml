@@ -1,0 +1,106 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="BuildTestAndPublish;PublishReleaseStatistics">
+    <Import Project="$(MSBUILD_CUSTOM_HOME)\DefineTasks.targets" />
+    <PropertyGroup>
+        <SolutionDirectory>$(WORKSPACE)</SolutionDirectory>
+        <SolutionFile>$(SolutionDirectory)\freebyUtil.Logging.sln</SolutionFile>
+        <ApplicationName Condition="$(JOB_NAME.StartsWith('BUILD - '))">$(JOB_NAME.Substring(8))</ApplicationName>
+        <ApplicationName Condition="!$(JOB_NAME.StartsWith('BUILD - '))">$(JOB_NAME)</ApplicationName>
+        <IncludeBinariesInSourceZip>true</IncludeBinariesInSourceZip>
+        <MainlineVersionOverride>16.0</MainlineVersionOverride>
+    </PropertyGroup>
+    <Target Name="BuildTestAndPublish">
+        <CallTarget Targets="MsgAppBuildStart" />
+        <CallTarget Targets="ShowGitInfo" />
+
+        <Exec Command="CopyLibs_Build.bat &quot;$(BASE_REPO_HOME)&quot;" WorkingDirectory="$(SolutionDirectory)" IgnoreExitCode="true" />
+        <Exec Command="nuget.exe restore &quot;$(SolutionFile)&quot;" WorkingDirectory="$(SolutionDirectory)\.build" />
+        <!-- 
+            MAJOR.MINOR VERSION OVERRIDE NOTE: 
+      
+            If you want to deviate from mainline version on Jenkins Server, you can override with MainlineVersionOverride defined above, otherwise
+            use the environment variable CURRENT_MAINLINE_VERSION instead.
+        -->
+        <DefineAppVersion BuildNumber="$(BUILD_NUMBER)" MainlineVersion="$(CURRENT_MAINLINE_VERSION)" GitBranch="$(GIT_BRANCH)" Verbose="$(VERBOSE)" >
+            <Output TaskParameter="ApplicationVersion" PropertyName="ApplicationVersion" />
+        </DefineAppVersion>
+        <Exec Command="CopyLibs_Debug.bat &quot;$(BASE_REPO_HOME)&quot;" WorkingDirectory="$(SolutionDirectory)" />
+        <SetVersionInfoFile SolutionType="cs" SolutionDirectory="$(SolutionDirectory)" Company="$(COMPANY)" ApplicationName="$(ApplicationName)" ApplicationVersion="$(ApplicationVersion)" Verbose="$(VERBOSE)" />
+
+        <!-- Build Debug version, run all unit tests, if successful publish to the repository. -->
+        <MSBuild Projects="$(SolutionFile)" Properties="Configuration=Debug;Platform=Any CPU" Targets="Clean;Build" />
+        <!--<NUnit Assemblies="$(SolutionDirectory)\freebyTrack.Web.Tests\bin\Debug\freebyTrack.Web.Tests.dll" ToolPath="$(NUNIT_2_6_HOME)" />-->
+
+        <!-- Push application -->
+        <PushToRepository ApplicationName="$(ApplicationName)" ApplicationVersion="$(ApplicationVersion)" PushToDirectory="Debug" SourceDirectoryOrFile="$(SolutionDirectory)\freebyUtil.Logging\bin\Debug" BaseRepositoryLocation="$(BASE_REPO_HOME)" Verbose="$(VERBOSE)">
+            <Output TaskParameter="RepositoryInfo" ItemName="RepositoryInfo" />
+        </PushToRepository>
+
+        <Exec Command="CopyLibs_Release.bat &quot;$(BASE_REPO_HOME)&quot;" WorkingDirectory="$(SolutionDirectory)" />
+        
+        <!-- Build Release version and publish to the repository. -->
+        <MSBuild Projects="$(SolutionFile)" Properties="Configuration=Release;Platform=Any CPU" Targets="Clean;Build" />
+
+        <PushToRepository ApplicationName="$(ApplicationName)" ApplicationVersion="$(ApplicationVersion)" PushToDirectory="Release" SourceDirectoryOrFile="$(SolutionDirectory)\freebyUtil.Logging\bin\Release" BaseRepositoryLocation="$(BASE_REPO_HOME)" Verbose="$(VERBOSE)" />
+        <OnError ExecuteTargets="InformUsersOnError" />
+    </Target>
+
+    <Target Name="CreateEnvironmentConfigs">
+
+        <!-- Create Configuration Files for Each Environment -->
+        <ItemGroup>
+            <!--<FileDefinition Include="nlog.config">
+                <SourceDir>$(BuildOutputDirectory)</SourceDir>
+                <OutputName>nlog.config</OutputName>
+                <KeyAttributes>name</KeyAttributes>
+                <AllowMissingUpdateFile>true</AllowMissingUpdateFile>
+            </FileDefinition>
+            <FileDefinition Include="web.config">
+                <SourceDir>$(BuildOutputDirectory)</SourceDir>
+                <OutputName>web.config</OutputName>
+                <KeyAttributes>name|key|statusCode</KeyAttributes>
+                <UseIndexes>true</UseIndexes>
+                <ExpansionArray>VERSION^$(ApplicationVersion)</ExpansionArray>
+                <AllowMissingUpdateFile>false</AllowMissingUpdateFile>
+            </FileDefinition>-->
+        </ItemGroup>
+
+        <ItemGroup>
+            <Environment Include="DEV" />
+            <!--<Environment Include="PROD" />-->
+        </ItemGroup>
+
+        <!-- Combine file list and environment list -->
+        <!--<CreateItem Include="@(FileDefinition)" AdditionalMetadata="Env=%(Environment.Identity)">
+      <Output ItemName="FileEnvDefinition" TaskParameter="Include" />
+    </CreateItem>-->
+        <ItemGroup>
+            <FileEnvDefinition Include="@(FileDefinition)">
+                <Env>%(Environment.Identity)</Env>
+            </FileEnvDefinition>
+        </ItemGroup>
+
+        <PropertyGroup>
+            <RepoDestination>%(RepositoryInfo.ConfigPath)</RepoDestination>
+        </PropertyGroup>
+
+        <UpdateXmlFile SourceXMLFile="%(FileEnvDefinition.SourceDir)\%(FileEnvDefinition.Identity)" DestinationXMLFile="$(RepoDestination)\%(FileEnvDefinition.Env)\%(FileEnvDefinition.OutputName)"
+                       UpdateXMLFile="%(FileEnvDefinition.SourceDir)\%(FileEnvDefinition.Identity).%(FileEnvDefinition.Env)-DIFF.xml" AllowMissingUpdateFile="%(FileEnvDefinition.AllowMissingUpdateFile)" UseIndexes="%(FileEnvDefinition.UseIndexes)"
+                       ElementsToIndex="%(FileEnvDefinition.ElementsToIndex)" KeyAttributes="%(FileEnvDefinition.KeyAttributes)" OverwriteExisting="%(FileEnvDefinition.OverwriteExisting)"
+                       ExpansionArray="%(FileEnvDefinition.ExpansionArray)" DeleteNodeArray="%(FileEnvDefinition.DeleteNodeArray)" Verbose="$(VERBOSE)" />
+
+        <OnError ExecuteTargets="InformUsersOnError" />
+    </Target>
+
+    <Import Project="$(MSBUILD_CUSTOM_HOME)\PublishRelease.targets" />
+
+    <Target Name="PublishReleaseStatistics">
+        <CallTarget Targets="CreateGitInfoFile" />
+        <CallTarget Targets="ZipAndPublishSource" />
+        <CallTarget Targets="PublishApplicationInfo" />
+        <CallTarget Targets="MsgAppBuildComplete" />
+    </Target>
+
+    <Target Name="InformUsersOnError">
+        <CallTarget Targets="MsgAppBuildFailed" />
+    </Target>
+</Project>
