@@ -1,0 +1,11 @@
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\b\SendFire.Web\Debug\netcoreapp2.0\SendFire.Web.deps.json
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\b\SendFire.Web\Debug\netcoreapp2.0\SendFire.Web.runtimeconfig.json
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\b\SendFire.Web\Debug\netcoreapp2.0\SendFire.Web.runtimeconfig.dev.json
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\b\SendFire.Web\Debug\netcoreapp2.0\SendFire.Web.dll
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\b\SendFire.Web\Debug\netcoreapp2.0\SendFire.Web.pdb
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Web\Debug\netcoreapp2.0\SendFire.Web.csprojResolveAssemblyReference.cache
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Web\Debug\netcoreapp2.0\SendFire.Web.csproj.CoreCompileInputs.cache
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Web\Debug\netcoreapp2.0\SendFire.Web.AssemblyInfoInputs.cache
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Web\Debug\netcoreapp2.0\SendFire.Web.AssemblyInfo.cs
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Web\Debug\netcoreapp2.0\SendFire.Web.dll
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Web\Debug\netcoreapp2.0\SendFire.Web.pdb

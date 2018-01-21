@@ -1,0 +1,11 @@
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\b\SendFire.Agent\Debug\netcoreapp2.0\SendFire.Agent.deps.json
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\b\SendFire.Agent\Debug\netcoreapp2.0\SendFire.Agent.runtimeconfig.json
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\b\SendFire.Agent\Debug\netcoreapp2.0\SendFire.Agent.runtimeconfig.dev.json
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\b\SendFire.Agent\Debug\netcoreapp2.0\SendFire.Agent.dll
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\b\SendFire.Agent\Debug\netcoreapp2.0\SendFire.Agent.pdb
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Agent\Debug\netcoreapp2.0\SendFire.Agent.csprojResolveAssemblyReference.cache
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Agent\Debug\netcoreapp2.0\SendFire.Agent.csproj.CoreCompileInputs.cache
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Agent\Debug\netcoreapp2.0\SendFire.Agent.AssemblyInfoInputs.cache
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Agent\Debug\netcoreapp2.0\SendFire.Agent.AssemblyInfo.cs
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Agent\Debug\netcoreapp2.0\SendFire.Agent.dll
+C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Agent\Debug\netcoreapp2.0\SendFire.Agent.pdb
