@@ -1,5 +1,5 @@
 # Common
-Common Libraries for trackItsValue Software Libraries written in .NET Core
+Common Libraries for trackItsValue Software written in .NET Core 2. Because it is written in .NET Core 2, these libaries can be run on Windows, Linux, or a Mac.
 
 Developer Information
 ---------------------
