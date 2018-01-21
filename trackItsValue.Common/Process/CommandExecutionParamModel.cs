@@ -1,5 +1,5 @@
 ﻿
-namespace SendFire.Common.Process
+namespace trackItsValue.Common.Process
 {
     public class CommandExecutionParamModel
     {

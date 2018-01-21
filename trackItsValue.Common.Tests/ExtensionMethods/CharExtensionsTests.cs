@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using SendFire.Common.ExtensionMethods;
+using trackItsValue.Common.ExtensionMethods;
 using Xunit;
 
-namespace SendFire.Common.Tests.ExtensionMethods
+namespace trackItsValue.Common.Tests.ExtensionMethods
 {
     public class CharExtensionsTests
     {

@@ -1,4 +1,0 @@
-The queue name must consist of lowercase letters, digits and underscore characters only. Given: 'jkl425*#'.
-   at SendFire.Agent.AgentService.ValidateConfigurationForBaseCommand(BaseCommandArgumentSelected baseCommand) in C:\dev\SendFire\SendFire\SendFire.Agent\AgentService.cs:line 55
-   at SendFire.Service.BaseClasses.SendFireServiceBase.ValidateConfiguration() in C:\dev\SendFire\SendFire\SendFire.Service\BaseClasses\SendFireServiceBase.cs:line 55
-   at SendFire.Service.BaseClasses.SendFireServiceFactoryBase.ValidateAndExecuteService() in C:\dev\SendFire\SendFire\SendFire.Service\BaseClasses\SendFireServiceFactoryBase.cs:line 55

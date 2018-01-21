@@ -1,5 +1,0 @@
-C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Common\Debug\netcoreapp2.0\SendFire.Common.Configuration.Resources.resources
-C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Common\Debug\netcoreapp2.0\SendFire.Common.csproj.GenerateResource.Cache
-C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Common\Debug\netcoreapp2.0\SendFire.Common.csproj.CoreCompileInputs.cache
-C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Common\Debug\netcoreapp2.0\SendFire.Common.AssemblyInfoInputs.cache
-C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Common\Debug\netcoreapp2.0\SendFire.Common.AssemblyInfo.cs

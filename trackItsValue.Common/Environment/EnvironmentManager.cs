@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using SendFire.Common.Interfaces;
+using trackItsValue.Common.Interfaces;
 
-namespace SendFire.Common.Environment
+namespace trackItsValue.Common.Environment
 {
     public class EnvironmentManager : IEnvironmentManager
     {

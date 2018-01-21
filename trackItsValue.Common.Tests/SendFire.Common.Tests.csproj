@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SendFire.Common\SendFire.Common.csproj" />
+    <ProjectReference Include="..\trackItsValue.Common\trackItsValue.Common.csproj" />
   </ItemGroup>
 
 </Project>

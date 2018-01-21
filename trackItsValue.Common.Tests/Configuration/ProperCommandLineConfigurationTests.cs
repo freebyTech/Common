@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
-using SendFire.Common.Configuration;
-using SendFire.Common.ExtensionMethods;
+using trackItsValue.Common.Configuration;
+using trackItsValue.Common.ExtensionMethods;
 using Xunit;
 
-namespace SendFire.Common.Tests.Configuration
+namespace trackItsValue.Common.Tests.Configuration
 {
     /// <summary>
     /// I had to replace the standard .NET Core CommandLineConfigurationProvider and CommandLineConfigurationSource with 

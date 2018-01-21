@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.0": {
+      "DasMulli.Win32.ServiceUtils/1.1.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/DasMulli.Win32.ServiceUtils.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/DasMulli.Win32.ServiceUtils.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.4.0": {
         "type": "package",
         "compile": {
@@ -1387,6 +1396,19 @@
     }
   },
   "libraries": {
+    "DasMulli.Win32.ServiceUtils/1.1.0": {
+      "sha512": "B4G9U1+DtX7DnTo135M4Oq9r/E9xJSCYO61BMyDs3H6XW0rjF27HFYHdj/Yz00h7GhhZ9rlUafkjsmeG+iDZog==",
+      "type": "package",
+      "path": "dasmulli.win32.serviceutils/1.1.0",
+      "files": [
+        "dasmulli.win32.serviceutils.1.1.0.nupkg.sha512",
+        "dasmulli.win32.serviceutils.nuspec",
+        "lib/netstandard1.3/DasMulli.Win32.ServiceUtils.dll",
+        "lib/netstandard1.3/DasMulli.Win32.ServiceUtils.xml",
+        "lib/netstandard2.0/DasMulli.Win32.ServiceUtils.dll",
+        "lib/netstandard2.0/DasMulli.Win32.ServiceUtils.xml"
+      ]
+    },
     "Microsoft.CSharp/4.4.0": {
       "sha512": "vvVR/B08YVghQ4jHEloxqw2ZWzEGE1AOA5E0DioUM3ujbXz6FD3AfB/0Jl2ohJPd0nXYGwmPe1En6HTsSriq1A==",
       "type": "package",
@@ -5074,6 +5096,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "DasMulli.Win32.ServiceUtils >= 1.1.0",
       "Microsoft.EntityFrameworkCore.Design >= 2.0.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 2.0.1",
       "Microsoft.Extensions.Configuration >= 2.0.0",
@@ -5093,21 +5116,17 @@
   },
   "project": {
     "version": "1.0.0",
-    "restoreSettings": {
-      "hideWarningsAndErrors": true
-    },
     "restore": {
-      "projectUniqueName": "C:\\dev\\SendFire\\SendFire\\SendFire.Common\\SendFire.Common.csproj",
-      "projectName": "SendFire.Common",
-      "projectPath": "C:\\dev\\SendFire\\SendFire\\SendFire.Common\\SendFire.Common.csproj",
+      "projectUniqueName": "C:\\dev\\tiv\\Common\\trackItsValue.Common\\trackItsValue.Common.csproj",
+      "projectName": "trackItsValue.Common",
+      "projectPath": "C:\\dev\\tiv\\Common\\trackItsValue.Common\\trackItsValue.Common.csproj",
       "packagesPath": "C:\\Users\\jeby\\.nuget\\packages\\",
-      "outputPath": "C:\\dev\\SendFire\\SendFire\\SendFire.Common\\obj\\",
+      "outputPath": "C:\\dev\\tiv\\Common\\trackItsValue.Common\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\dev\\SendFire\\SendFire\\NuGet.Config",
         "C:\\Users\\jeby\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -5115,7 +5134,7 @@
         "netcoreapp2.0"
       ],
       "sources": {
-        "C:\\dev\\SendFire\\SendFire\\Hangfire.NugetPackages": {},
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {},
         "https://powershell.myget.org/F/powershell-core/api/v3/index.json": {}
       },
@@ -5133,51 +5152,55 @@
     "frameworks": {
       "netcoreapp2.0": {
         "dependencies": {
-          "Microsoft.Extensions.Configuration.EnvironmentVariables": {
+          "DasMulli.Win32.ServiceUtils": {
             "target": "Package",
-            "version": "2.0.0"
-          },
-          "Microsoft.Extensions.Configuration.FileExtensions": {
-            "target": "Package",
-            "version": "2.0.0"
-          },
-          "Microsoft.Extensions.Configuration.Json": {
-            "target": "Package",
-            "version": "2.0.0"
-          },
-          "Microsoft.Extensions.DependencyInjection": {
-            "target": "Package",
-            "version": "2.0.0"
-          },
-          "Microsoft.Extensions.Configuration": {
-            "target": "Package",
-            "version": "2.0.0"
+            "version": "[1.1.0, )"
           },
           "Microsoft.EntityFrameworkCore.Design": {
             "target": "Package",
-            "version": "2.0.0"
+            "version": "[2.0.0, )"
+          },
+          "Microsoft.EntityFrameworkCore.SqlServer": {
+            "target": "Package",
+            "version": "[2.0.1, )"
+          },
+          "Microsoft.Extensions.Configuration": {
+            "target": "Package",
+            "version": "[2.0.0, )"
           },
           "Microsoft.Extensions.Configuration.CommandLine": {
             "target": "Package",
-            "version": "2.0.0"
+            "version": "[2.0.0, )"
+          },
+          "Microsoft.Extensions.Configuration.EnvironmentVariables": {
+            "target": "Package",
+            "version": "[2.0.0, )"
+          },
+          "Microsoft.Extensions.Configuration.FileExtensions": {
+            "target": "Package",
+            "version": "[2.0.0, )"
+          },
+          "Microsoft.Extensions.Configuration.Json": {
+            "target": "Package",
+            "version": "[2.0.0, )"
+          },
+          "Microsoft.Extensions.DependencyInjection": {
+            "target": "Package",
+            "version": "[2.0.0, )"
+          },
+          "Microsoft.Extensions.Logging": {
+            "target": "Package",
+            "version": "[2.0.0, )"
+          },
+          "Microsoft.Extensions.Logging.Console": {
+            "target": "Package",
+            "version": "[2.0.0, )"
           },
           "Microsoft.NETCore.App": {
             "suppressParent": "All",
             "target": "Package",
-            "version": "2.0.3",
+            "version": "[2.0.3, )",
             "autoReferenced": true
-          },
-          "Microsoft.EntityFrameworkCore.SqlServer": {
-            "target": "Package",
-            "version": "2.0.1"
-          },
-          "Microsoft.Extensions.Logging.Console": {
-            "target": "Package",
-            "version": "2.0.0"
-          },
-          "Microsoft.Extensions.Logging": {
-            "target": "Package",
-            "version": "2.0.0"
           }
         },
         "imports": [

@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "SendFire.Agent": {
-      "commandName": "Project",
-      "commandLineArgs": "--console"
-    }
-  }
-}

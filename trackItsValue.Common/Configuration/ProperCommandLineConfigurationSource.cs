@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
-namespace SendFire.Common.Configuration
+namespace trackItsValue.Common.Configuration
 {
     /// <summary>
     /// Represents command line arguments as an <see cref="IConfigurationSource"/>.

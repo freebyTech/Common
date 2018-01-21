@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using SendFire.Common.ExtensionMethods;
+using trackItsValue.Common.ExtensionMethods;
 using Xunit;
 
-namespace SendFire.Common.Tests.ExtensionMethods.StringExtensions
+namespace trackItsValue.Common.Tests.ExtensionMethods.StringExtensions
 {
     public class StringExtensionsTests
     {

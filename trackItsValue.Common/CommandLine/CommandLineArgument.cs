@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SendFire.Common.CommandLine
+namespace trackItsValue.Common.CommandLine
 {
     public class CommandLineArgument
     {

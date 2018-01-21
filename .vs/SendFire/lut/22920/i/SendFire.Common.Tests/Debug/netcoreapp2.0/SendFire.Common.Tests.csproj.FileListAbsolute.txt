@@ -1,4 +1,0 @@
-C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Common.Tests\Debug\netcoreapp2.0\SendFire.Common.Tests.csprojResolveAssemblyReference.cache
-C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Common.Tests\Debug\netcoreapp2.0\SendFire.Common.Tests.csproj.CoreCompileInputs.cache
-C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Common.Tests\Debug\netcoreapp2.0\SendFire.Common.Tests.AssemblyInfoInputs.cache
-C:\dev\SendFire\SendFire\.vs\SendFire\lut\0\i\SendFire.Common.Tests\Debug\netcoreapp2.0\SendFire.Common.Tests.AssemblyInfo.cs

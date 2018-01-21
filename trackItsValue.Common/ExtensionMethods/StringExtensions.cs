@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using SendFire.Common.Interfaces;
+using trackItsValue.Common.Interfaces;
 
-namespace SendFire.Common.ExtensionMethods
+namespace trackItsValue.Common.ExtensionMethods
 {
     public static class StringExtensions
     {

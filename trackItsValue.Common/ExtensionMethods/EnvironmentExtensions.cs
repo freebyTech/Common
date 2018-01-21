@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using SendFire.Common.Environment;
-using SendFire.Common.Interfaces;
+using trackItsValue.Common.Environment;
+using trackItsValue.Common.Interfaces;
 
-namespace SendFire.Common.ExtensionMethods
+namespace trackItsValue.Common.ExtensionMethods
 {
     public static class EnvironmentExtensions
     {

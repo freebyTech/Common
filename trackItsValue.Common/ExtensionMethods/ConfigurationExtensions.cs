@@ -4,10 +4,10 @@ using System.IO;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SendFire.Common.Configuration;
-using SendFire.Common.Interfaces;
+using trackItsValue.Common.Configuration;
+using trackItsValue.Common.Interfaces;
 
-namespace SendFire.Common.ExtensionMethods
+namespace trackItsValue.Common.ExtensionMethods
 {
     public static class ConfigurationExtensions
     {

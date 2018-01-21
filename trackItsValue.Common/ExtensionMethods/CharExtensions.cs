@@ -1,4 +1,4 @@
-﻿namespace SendFire.Common.ExtensionMethods
+﻿namespace trackItsValue.Common.ExtensionMethods
 {
     public static class CharExtensions
     {

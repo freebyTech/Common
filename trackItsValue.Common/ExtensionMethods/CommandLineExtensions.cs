@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using SendFire.Common.CommandLine;
+using trackItsValue.Common.CommandLine;
 
-namespace SendFire.Common.ExtensionMethods
+namespace trackItsValue.Common.ExtensionMethods
 {
     public static class CommandLineExtensions
     {

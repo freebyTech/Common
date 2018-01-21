@@ -1,4 +1,4 @@
-﻿namespace SendFire.Common.Interfaces
+﻿namespace trackItsValue.Common.Interfaces
 {
     public interface IExecutionEnvironment
     {
