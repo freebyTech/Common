@@ -1,5 +1,6 @@
 ﻿using freebyUtil.Common.Interfaces;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -8,10 +9,11 @@ namespace freebyUtil.Common.ExtensionMethods
   public static class StringExtensions
   {
     /// <summary>
-    /// More succinct usage of IsNullOrEmpty()
+    /// More succinct usage of string.IsNullOrEmpty()
     /// </summary>
     /// <param name="value"></param>
     /// <returns></returns>
+    [DebuggerStepThrough]
     public static bool IsNullOrEmpty(this string value)
     {
       return (string.IsNullOrEmpty(value));
@@ -23,6 +25,7 @@ namespace freebyUtil.Common.ExtensionMethods
     /// <param name="sb"></param>
     /// <param name="name"></param>
     /// <param name="value"></param>
+    [DebuggerStepThrough]
     public static void AppendUriEncoded(this StringBuilder sb, string name, string value)
     {
       if (sb.Length > 0)
@@ -40,11 +43,19 @@ namespace freebyUtil.Common.ExtensionMethods
     /// <param name="path1"></param>
     /// <param name="path2"></param>
     /// <returns></returns>
+    [DebuggerStepThrough]
     public static string PathCombine(this string path1, string path2)
     {
       return Path.Combine(path1, path2);
     }
 
+    /// <summary>
+    /// Compares two strings without regard to case.
+    /// </summary>
+    /// <param name="stringA">The first string to compare.</param>
+    /// <param name="stringB">The second string to compare.</param>
+    /// <returns>True if they are equal without regard to case, otherwise false.</returns>
+    [DebuggerStepThrough]
     public static bool CompareNoCase(this string stringA, string stringB)
     {
       if (string.Compare(stringA, stringB, StringComparison.OrdinalIgnoreCase) == 0)
@@ -54,11 +65,26 @@ namespace freebyUtil.Common.ExtensionMethods
       return (false);
     }
 
+    /// <summary>
+    /// Determines whether or not <paramref name="stringA"/> is contained within <paramref name="stringB"/> in a caseless manner.    
+    /// </summary>
+    /// <param name="stringA">String to search for.</param>
+    /// <param name="stringB">String to search inside of.</param>
+    /// <returns>True if <paramref name="stringA"/> is inside of <paramref name="stringB"/> without regard to case.</returns>
+    [DebuggerStepThrough]
     public static bool ContainsNoCase(this string stringA, string stringB)
     {
       return (stringA.IndexOf(stringB, StringComparison.OrdinalIgnoreCase) >= 0);
     }
 
+
+    /// <summary>
+    /// Compares two strings without regard to case.
+    /// </summary>
+    /// <param name="stringA">The first string to compare.</param>
+    /// <param name="stringB">The second string to compare.</param>
+    /// <returns>True if they are equal with regard to case, otherwise false.</returns>
+    [DebuggerStepThrough]
     public static bool CompareWithCase(this string stringA, string stringB)
     {
       if (string.Compare(stringA, stringB, StringComparison.Ordinal) == 0)
@@ -68,47 +94,85 @@ namespace freebyUtil.Common.ExtensionMethods
       return (false);
     }
 
-    public static string SafeToUpper(this string dbValue)
+    /// <summary>
+    /// A safe ToUpper method, as of C# version 6 and beyond this can be done with a /"Safe Navigation/" operator
+    /// like <code>value?.ToUpper</code> but this method also will turn a null into an empty string and has remained for
+    /// backwards compatibility with this behavior.
+    /// </summary>
+    /// <returns></returns> 
+    [DebuggerStepThrough]
+    public static string SafeToUpper(this string value)
     {
-      if (dbValue.IsNullOrEmpty()) return "";
+      if (value.IsNullOrEmpty()) return "";
 
-      return (dbValue.ToUpper());
+      return (value.ToUpper());
     }
 
 
-    public static string SafeTrim(this string dbValue)
+    /// <summary>
+    /// A safe Trim method, as of C# version 6 and beyond this can be done with a /"Safe Navigation/" operator
+    /// like <code>value?.Trim</code> but this method also will turn a null into an empty string and has remained for
+    /// backwards compatibility with this behavior.
+    /// </summary>
+    /// <returns></returns>
+    [DebuggerStepThrough]
+    public static string SafeTrim(this string value)
     {
-      if (dbValue.IsNullOrEmpty()) return "";
+      if (value.IsNullOrEmpty()) return "";
 
-      return (dbValue.Trim());
+      return (value.Trim());
     }
 
-    public static string SafeTrimStart(this string dbValue)
+    /// <summary>
+    /// A safe TrimStart method, as of C# version 6 and beyond this can be done with a /"Safe Navigation/" operator
+    /// like <code>value?.TrimStart</code> but this method also will turn a null into an empty string and has remained for
+    /// backwards compatibility with this behavior.
+    /// </summary>
+    /// <returns></returns>
+    [DebuggerStepThrough]
+    public static string SafeTrimStart(this string value)
     {
-      if (dbValue.IsNullOrEmpty()) return "";
+      if (value.IsNullOrEmpty()) return "";
 
-      return (dbValue.TrimStart());
+      return (value.TrimStart());
     }
 
-    public static string SafeTrimEnd(this string dbValue)
+    /// <summary>
+    /// A safe TrimEnd method, as of C# version 6 and beyond this can be done with a /"Safe Navigation/" operator
+    /// like <code>value?.TrimEnd</code> but this method also will turn a null into an empty string and has remained for
+    /// backwards compatibility with this behavior.
+    /// </summary>
+    /// <returns></returns>
+    [DebuggerStepThrough]
+    public static string SafeTrimEnd(this string value)
     {
-      if (dbValue.IsNullOrEmpty()) return "";
+      if (value.IsNullOrEmpty()) return "";
 
-      return (dbValue.TrimEnd());
+      return (value.TrimEnd());
     }
 
-    public static string SafeTrimUpper(this string dbValue)
+    /// <summary>
+    /// A combined safe Trim and ToUpper method.
+    /// </summary>
+    /// <returns></returns>
+    [DebuggerStepThrough]
+    public static string SafeTrimUpper(this string value)
     {
-      if (dbValue.IsNullOrEmpty()) return "";
+      if (value.IsNullOrEmpty()) return "";
 
-      return (dbValue.Trim().ToUpper());
+      return (value.Trim().ToUpper());
     }
 
-    public static string VerifySize(this string dbValue, int maxLength = 0)
+    /// <summary>
+    /// A safe method for setting to a maximum size and returning the full or truncated portion or an emptry string.
+    /// </summary>
+    /// <returns></returns>
+    [DebuggerStepThrough]
+    public static string VerifySize(this string value, int maxLength = 0)
     {
-      if (dbValue.IsNullOrEmpty()) return "";
+      if (value.IsNullOrEmpty()) return "";
 
-      var ret = dbValue.Trim();
+      var ret = value.Trim();
       if ((maxLength > 0) && (ret.Length >= maxLength))
       {
         ret = ret.Substring(0, maxLength);
@@ -117,7 +181,10 @@ namespace freebyUtil.Common.ExtensionMethods
       return (ret);
     }
 
-
+    /// <summary>
+    /// A safe method for determining if a value is empty and if it is throwing a <paramref name="System.ArgumentException"/> if it is.
+    /// </summary>
+    [DebuggerStepThrough]
     public static void ThrowIfEmpty(this string value, string name)
     {
       if (value.SafeTrim().IsNullOrEmpty())
@@ -126,7 +193,10 @@ namespace freebyUtil.Common.ExtensionMethods
       }
     }
 
-
+    /// <summary>
+    /// Deserializes a passed XML string into the type defined by T.
+    /// </summary>
+    /// <returns></returns>
     public static T DeserializeXML<T>(this string value) where T : class
     {
       var encoding = new UTF8Encoding();
@@ -139,9 +209,14 @@ namespace freebyUtil.Common.ExtensionMethods
 
     }
 
-    public static string Left(this string str, int length)
+    /// <summary>
+    /// A safe Left function that will return only a given length of characters from the left side.
+    /// </summary>
+    /// <returns></returns>
+    public static string SafeLeft(this string str, int length)
     {
-      int strLen = str.Length;
+      if(str.IsNullOrEmpty()) return String.Empty;
+      var strLen = str.Length;
       if (length > strLen)
       {
         return str;
@@ -149,16 +224,21 @@ namespace freebyUtil.Common.ExtensionMethods
 
       if (str != string.Empty)
       {
-        string result = str.Substring(0, length);
+        var result = str.Substring(0, length);
         return result;
       }
 
       return str;
     }
 
-    public static string Right(this string str, int length)
+    /// <summary>
+    /// A safe Right function that will return only a given length of characters from the right side.
+    /// </summary>
+    /// <returns></returns>
+    public static string SafeRight(this string str, int length)
     {
-      int strLen = str.Length;
+      if(str.IsNullOrEmpty()) return String.Empty;
+      var strLen = str.Length;
       if (length > strLen)
       {
         return str;
@@ -166,7 +246,7 @@ namespace freebyUtil.Common.ExtensionMethods
 
       if (str != string.Empty)
       {
-        string result = str.Substring(strLen - length, length);
+        var result = str.Substring(strLen - length, length);
         return result;
       }
 
@@ -224,9 +304,13 @@ namespace freebyUtil.Common.ExtensionMethods
       return sourceString.Replace(string.Format("@{0}@", buildProperty), buildValue);
     }
 
+    /// <summary>
+    /// Sanitizes a given value to a maximum length if needed.
+    /// </summary>
+    /// <returns></returns>
     public static string SanitizeInputs(this string str, int maxLength)
     {
-      if (str == null)
+      if (str.IsNullOrEmpty())
       {
         str = string.Empty;
       }

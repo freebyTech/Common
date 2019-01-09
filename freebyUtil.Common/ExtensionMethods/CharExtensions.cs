@@ -8,6 +8,10 @@ namespace freebyUtil.Common.ExtensionMethods
 {
   public static class CharExtensions
   {
+    /// <summary>
+    /// Will create a string of characters of the given length.
+    /// </summary>
+    /// <returns></returns>
     public static string MakeLine(this char character, int lineLength) => new string(character, lineLength);
   }
 }
