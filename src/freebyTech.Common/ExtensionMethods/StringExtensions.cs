@@ -9,6 +9,18 @@ namespace freebyUtil.Common.ExtensionMethods
   public static class StringExtensions
   {
     /// <summary>
+    /// A safe version of the Length property.
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    [DebuggerStepThrough]
+    public static int SafeLength(this string value)
+    {
+      if(value.IsNullOrEmpty()) return 0;
+      return (value.Length);
+    }
+
+    /// <summary>
     /// More succinct usage of string.IsNullOrEmpty()
     /// </summary>
     /// <param name="value"></param>
