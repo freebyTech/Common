@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using DasMulli.Win32.ServiceUtils;
-using trackItsValue.Common.CommandLine;
-using trackItsValue.Common.Interfaces;
-using trackItsValue.Service.BaseClasses;
+using freebyTech.Common.CommandLine;
+using freebyTech.Common.Service.BaseClasses;
 
-namespace trackItsValue.Service.Interfaces
+namespace freebyTech.Common.Service.Interfaces
 {
     public interface IService : IWin32Service
     {

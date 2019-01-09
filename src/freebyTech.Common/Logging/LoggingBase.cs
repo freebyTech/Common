@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using freebyTech.Common.ExtensionMethods;
 using NLog;
-using freebyUtil.Common.ExtensionMethods;
 
-namespace freebyUtil.Logging
+namespace freebyTech.Common.Logging
 {
   /// <summary>
   /// General list of different logger types, not necessarily comprehensive as certain apps could have custom ones.
@@ -90,30 +89,34 @@ namespace freebyUtil.Logging
 
     public string ApplicationVersion { get; private set; }
 
-   public string LoggingAssemblyVersion { get; private set; }
+    public string LoggingAssemblyVersion { get; private set; }
 
-    private string _userName = string.Empty;
-    public string UserName
-    {
-      get
-      {
-        if (string.IsNullOrEmpty(_userName))
+        // The type name 'WindowsIdentity' could not be found in the namespace 'System.Security.Principal'.
+        // This type has been forwarded to assembly 'System.Security.Principal.Windows, Version=0.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a'
+        // TODO: This is not compatible with non windows projects?
+        //private string _userName = string.Empty;
+        public string UserName
         {
-          var windowsIdentity = System.Security.Principal.WindowsIdentity.GetCurrent();
-          _userName = windowsIdentity != null ? windowsIdentity.Name : "Unknown";
+            get
+            {
+                //if (string.IsNullOrEmpty(_userName))
+                //{
+                //    var windowsIdentity = System.Security.Principal.WindowsIdentity.GetCurrent();
+                //    _userName = windowsIdentity != null ? windowsIdentity.Name : "Unknown";
+                //}
+                //return (_userName);
+                return "";
+            }
         }
-        return (_userName);
-      }
-    }
 
-    private string _processName = string.Empty;
+        private string _processName = string.Empty;
     public string ProcessName
     {
       get
       {
         if (string.IsNullOrEmpty(_processName))
         {
-          _processName = Process.GetCurrentProcess().ProcessName;
+          _processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
         }
         return (_processName);
       }
@@ -170,7 +173,7 @@ namespace freebyUtil.Logging
     /// This must override method is what sets custom properties in the log event based upon derived Logging type.
     /// </summary>
     /// <param name="logEventInfo"></param>
-    protected abstract void SetCustomProperties(NLog.LogEventInfo logEventInfo);
+    protected abstract void SetCustomProperties(LogEventInfo logEventInfo);
 
     #endregion
 

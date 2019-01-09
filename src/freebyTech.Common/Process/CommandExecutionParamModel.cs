@@ -1,5 +1,5 @@
 ﻿
-namespace trackItsValue.Common.Process
+namespace freebyTech.Common.Process
 {
     public class CommandExecutionParamModel
     {

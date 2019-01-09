@@ -1,8 +1,8 @@
 ﻿using System;
-using trackItsValue.Common.Interfaces;
-using trackItsValue.Common.ExtensionMethods;
+using freebyTech.Common.ExtensionMethods;
+using freebyTech.Common.Interfaces;
 
-namespace trackItsValue.Common.Environment
+namespace freebyTech.Common.Environment
 {
     public class ExecutionEnvironment : IExecutionEnvironment
     {

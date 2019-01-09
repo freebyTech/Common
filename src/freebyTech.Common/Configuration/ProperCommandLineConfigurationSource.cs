@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 
-namespace trackItsValue.Common.Configuration
+namespace freebyTech.Common.Configuration
 {
     /// <summary>
     /// Represents command line arguments as an <see cref="IConfigurationSource"/>.

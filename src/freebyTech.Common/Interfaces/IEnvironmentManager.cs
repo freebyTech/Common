@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace trackItsValue.Common.Interfaces
+namespace freebyTech.Common.Interfaces
 {
     public interface IEnvironmentManager
     {

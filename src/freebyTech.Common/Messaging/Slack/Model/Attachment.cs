@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace freebyUtil.Messaging.Slack.Model
+namespace freebyTech.Common.Messaging.Slack.Model
 {
   /// <summary>
   /// See https://api.slack.com/docs/attachments for more information concerning this model definition.

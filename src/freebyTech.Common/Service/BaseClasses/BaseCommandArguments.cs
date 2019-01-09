@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace trackItsValue.Service.BaseClasses
+﻿namespace freebyTech.Common.Service.BaseClasses
 {
     public enum BaseCommandArgumentSelected
     {

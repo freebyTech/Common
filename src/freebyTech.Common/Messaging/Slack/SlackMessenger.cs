@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Net;
 using System.Text;
+using freebyTech.Common.Messaging.Slack.Model;
 using Newtonsoft.Json;
-using freebyUtil.Messaging.Slack.Model;
 
-namespace freebyUtil.Messaging.Slack
+namespace freebyTech.Common.Messaging.Slack
 {
     public class SlackMessenger
     {

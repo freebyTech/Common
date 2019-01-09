@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
-namespace trackItsValue.Common.Configuration
+namespace freebyTech.Common.Configuration
 {
     /// <summary>
     /// A command line based <see cref="ConfigurationProvider"/>.

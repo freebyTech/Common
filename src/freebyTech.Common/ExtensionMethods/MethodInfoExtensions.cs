@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Reflection;
 
-namespace freebyUtil.Common.ExtensionMethods
+namespace freebyTech.Common.ExtensionMethods
 {
   public static class MethodInfoExtensions
   {

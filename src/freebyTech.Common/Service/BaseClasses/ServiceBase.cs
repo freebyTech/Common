@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Reflection;
-using DasMulli.Win32.ServiceUtils;
+using freebyTech.Common.CommandLine;
+using freebyTech.Common.Service.Interfaces;
+using freebyTech.Common.ExtensionMethods;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using trackItsValue.Common.CommandLine;
-using trackItsValue.Common.ExtensionMethods;
-using trackItsValue.Service.Interfaces;
+using DasMulli.Win32.ServiceUtils;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace trackItsValue.Service.BaseClasses
+namespace freebyTech.Common.Service.BaseClasses
 {
     public abstract class ServiceBase : IService
     {

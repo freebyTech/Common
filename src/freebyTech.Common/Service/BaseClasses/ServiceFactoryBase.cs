@@ -4,17 +4,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using DasMulli.Win32.ServiceUtils;
+using freebyTech.Common.CommandLine;
+using freebyTech.Common.ExtensionMethods;
+using freebyTech.Common.Interfaces;
+using freebyTech.Common.Service.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using trackItsValue.Common.CommandLine;
-using trackItsValue.Common.ExtensionMethods;
-using trackItsValue.Common.Interfaces;
-using trackItsValue.Service.Interfaces;
-using System.Diagnostics;
-using System.IO;
 
-namespace trackItsValue.Service.BaseClasses
+namespace freebyTech.Common.Service.BaseClasses
 {
     public abstract class ServiceFactoryBase : IServiceFactory
     {
@@ -59,7 +57,7 @@ namespace trackItsValue.Service.BaseClasses
                 switch (status)
                 {
                     case BaseCommandArgumentSelected.DisplayHelp:
-                        Environment.ExitCode = 1;
+                        System.Environment.ExitCode = 1;
                         Thread.Sleep(500); // Allow NLog Console Logging.
                         break;
 
@@ -84,11 +82,11 @@ namespace trackItsValue.Service.BaseClasses
                         break;
 
                     case BaseCommandArgumentSelected.RegisterService:
-                        var rebuiltArguments = Environment.GetCommandLineArgs()
+                        var rebuiltArguments = System.Environment.GetCommandLineArgs()
                             .Where(arg =>
                                 !arg.EndsWith(BaseCommandArguments.RegisterService, StringComparison.OrdinalIgnoreCase))
                             .Select(EscapeCommandLineArgument);
-                        var host = Process.GetCurrentProcess().MainModule.FileName;
+                        var host = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
 
                         if (!host.EndsWith("dotnet.exe", StringComparison.OrdinalIgnoreCase))
                         {

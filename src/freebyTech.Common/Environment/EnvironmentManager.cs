@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using trackItsValue.Common.Interfaces;
+using freebyTech.Common.Interfaces;
 
-namespace trackItsValue.Common.Environment
+namespace freebyTech.Common.Environment
 {
     public class EnvironmentManager : IEnvironmentManager
     {

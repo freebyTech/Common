@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
+using freebyTech.Common.Configuration;
+using freebyTech.Common.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using trackItsValue.Common.Configuration;
-using trackItsValue.Common.Interfaces;
 
-namespace trackItsValue.Common.ExtensionMethods
+namespace freebyTech.Common.ExtensionMethods
 {
     public static class ConfigurationExtensions
     {

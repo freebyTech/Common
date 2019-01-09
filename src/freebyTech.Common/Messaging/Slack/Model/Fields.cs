@@ -1,4 +1,4 @@
-﻿namespace freebyUtil.Messaging.Slack.Model
+﻿namespace freebyTech.Common.Messaging.Slack.Model
 {
     public class Fields
     {

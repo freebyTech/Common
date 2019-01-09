@@ -1,10 +1,12 @@
-﻿using freebyUtil.Common.Interfaces;
+﻿using freebyTech.Common.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 
-namespace freebyUtil.Common.ExtensionMethods
+namespace freebyTech.Common.ExtensionMethods
 {
   public static class StringExtensions
   {
@@ -335,5 +337,103 @@ namespace freebyUtil.Common.ExtensionMethods
 
       return (str);
     }
+
+    public static bool IsSameCommandLineArg(this string arg, string argExpected)
+        {
+            argExpected = argExpected.StripToArgument();
+            arg = arg.StripToArgument();
+            return arg.CompareNoCase(argExpected);
+        }
+
+        public static bool StartsWithCommandLineArg(this string arg, string argExpected)
+        {
+            argExpected = argExpected.StripToArgument().ToUpper();
+            arg = arg.SafeToUpper();
+            return arg.StartsWith($"/{argExpected}") || arg.StartsWith($"-{argExpected}") || arg.StartsWith($"--{argExpected}");
+
+        }
+
+        public static string StripToArgument(this string arg)
+        {
+            if (arg.IsNullOrEmpty()) return "";
+            if (arg.StartsWith("--"))
+            {
+                return arg.Substring(2);
+            }
+            if (arg.StartsWith("/") || arg.StartsWith("-"))
+            {
+                return arg.Substring(1);
+            }
+            return arg;
+        }
+
+        public static bool IsTrue(this string arg)
+        {
+            if (arg.IsNullOrEmpty()) return false;
+            if (arg.CompareNoCase("true") || arg == "1" || arg.CompareNoCase("t") || arg.CompareNoCase("y") || arg.CompareNoCase("yes")) return true;
+            return false;
+        }
+
+        public static bool IsFalse(this string arg)
+        {
+            if (arg.IsNullOrEmpty()) return false;
+            if (arg.CompareNoCase("false") || arg == "0" || arg.CompareNoCase("f") || arg.CompareNoCase("n") || arg.CompareNoCase("no")) return true;
+            return false;
+        }
+
+        public static string WrapAtLines(this string text, int lineLength)
+        {
+            using (var reader = new StringReader(text))
+                return reader.ReadToEnd(lineLength);
+        }
+
+        public static string[] SplitAtLines(this string text, int lineLength)
+        {
+            using (var reader = new StringReader(text))
+                return reader.ReadLines(lineLength).ToArray();
+        }
+
+        public static string ReadToEnd(this TextReader reader, int lineLength)
+        {
+            return string.Join(System.Environment.NewLine, reader.ReadLines(lineLength));
+        }
+
+        public static IEnumerable<string> ReadLines(this TextReader reader, int lineLength)
+        {
+            var line = new StringBuilder();
+            foreach (var word in reader.ReadWords())
+                if (line.Length + word.Length <= lineLength)
+                    line.Append($"{word} ");
+                else
+                {
+                    yield return line.ToString().Trim();
+                    line = new StringBuilder($"{word} ");
+                }
+
+            if (line.Length > 0)
+                yield return line.ToString().Trim();
+        }
+
+        public static IEnumerable<string> ReadWords(this TextReader reader)
+        {
+            while (!reader.IsEof())
+            {
+                var word = new StringBuilder();
+                while (!reader.IsBreak())
+                {
+                    word.Append(reader.Text());
+                    reader.Read();
+                }
+
+                reader.Read();
+                if (word.Length > 0)
+                    yield return word.ToString();
+            }
+        }
+
+        static bool IsBreak(this TextReader reader) => reader.IsEof() || reader.IsNullOrWhiteSpace();
+        static bool IsNullOrWhiteSpace(this TextReader reader) => string.IsNullOrWhiteSpace(reader.Text());
+        static string Text(this TextReader reader) => char.ConvertFromUtf32(reader.Peek());
+        static bool IsEof(this TextReader reader) => reader.Peek() == -1;
   }
 }

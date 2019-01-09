@@ -1,4 +1,4 @@
-﻿namespace trackItsValue.Common.Interfaces
+﻿namespace freebyTech.Common.Interfaces
 {
     public interface IExecutionEnvironment
     {

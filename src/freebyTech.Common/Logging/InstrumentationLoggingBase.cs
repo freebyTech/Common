@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using freebyUtil.Common.ExtensionMethods;
+using freebyTech.Common.ExtensionMethods;
 using NLog;
 
-namespace freebyUtil.Logging
+namespace freebyTech.Common.Logging
 {
   /// <summary>
   /// 

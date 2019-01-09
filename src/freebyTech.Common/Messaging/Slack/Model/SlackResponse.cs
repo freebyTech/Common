@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace freebyUtil.Messaging.Slack.Model
+﻿namespace freebyTech.Common.Messaging.Slack.Model
 {
     public class SlackResponse
     {

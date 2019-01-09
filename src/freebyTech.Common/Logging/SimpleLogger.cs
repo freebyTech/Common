@@ -1,7 +1,7 @@
-﻿using System.Reflection;
-using NLog;
+﻿using NLog;
+using System.Reflection;
 
-namespace freebyUtil.Logging
+namespace freebyTech.Common.Logging
 {
   /// <summary>
   /// 

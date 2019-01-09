@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using trackItsValue.Common.CommandLine;
+using freebyTech.Common.CommandLine;
 
-namespace trackItsValue.Common.ExtensionMethods
+namespace freebyTech.Common.ExtensionMethods
 {
     public static class CommandLineExtensions
     {

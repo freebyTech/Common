@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using trackItsValue.Common.Environment;
-using trackItsValue.Common.Interfaces;
+﻿using freebyTech.Common.Environment;
+using freebyTech.Common.Interfaces;
 
-namespace trackItsValue.Common.ExtensionMethods
+namespace freebyTech.Common.ExtensionMethods
 {
     public static class EnvironmentExtensions
     {

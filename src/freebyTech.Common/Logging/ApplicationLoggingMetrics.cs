@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace freebyUtil.Logging
+namespace freebyTech.Common.Logging
 {
   public class ApplicationLoggingMetrics
   {

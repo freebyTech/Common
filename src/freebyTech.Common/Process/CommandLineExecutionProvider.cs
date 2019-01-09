@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
-using System.Collections.Generic;
-using trackItsValue.Common.Interfaces;
 using System.Runtime.InteropServices;
-using trackItsValue.Common.Environment;
+using System.Text;
+using freebyTech.Common.Environment;
 
-namespace trackItsValue.Common.Process
+namespace freebyTech.Common.Process
 {
     public class CommandLineExecutionProvider
     {

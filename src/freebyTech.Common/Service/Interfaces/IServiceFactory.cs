@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using DasMulli.Win32.ServiceUtils;
-using Microsoft.Extensions.Configuration;
+using freebyTech.Common.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using trackItsValue.Common;
-using trackItsValue.Common.Interfaces;
 
-namespace trackItsValue.Service.Interfaces
+namespace freebyTech.Common.Service.Interfaces
 {
     public interface IServiceFactory
     {

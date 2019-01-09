@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace freebyUtil.Common.ExtensionMethods
+﻿namespace freebyTech.Common.ExtensionMethods
 {
   public static class CharExtensions
   {
@@ -18,6 +12,6 @@ namespace freebyUtil.Common.ExtensionMethods
     /// Will make a title line using the 
     /// </summary>
     /// <returns></returns>
-    public static string MakeTitleLine(this char character, string title) => new string(character, title.SafeLength);
+    public static string MakeTitleLine(this char character, string title) => new string(character, title.SafeLength());
   }
 }

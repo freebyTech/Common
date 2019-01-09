@@ -1,7 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
-namespace freebyUtil.Common.ExtensionMethods
+namespace freebyTech.Common.ExtensionMethods
 {
   public static class StopwatchExtensions
   {

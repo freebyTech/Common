@@ -1,10 +1,9 @@
-﻿using freebyUtil.Common.ExtensionMethods;
-using Newtonsoft.Json;
-using System;
-using System.Linq;
+﻿using System;
 using System.Text;
+using freebyTech.Common.ExtensionMethods;
+using Newtonsoft.Json;
 
-namespace freebyUtil.Messaging.Slack.Model
+namespace freebyTech.Common.Messaging.Slack.Model
 {
   public static class SlackMessageExtensions
     {   
