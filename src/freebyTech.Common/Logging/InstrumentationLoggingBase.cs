@@ -12,13 +12,13 @@ namespace freebyUtil.Logging
   /// it also sets the proper message type to "Instrumentation" in log message payloads.
   /// 
   /// You use this class directly or subclass this class to define your own instrumentation logging, just override the
-  /// SetDerivedCustomProperties() method to set any extra custom properties.
+  /// <code>SetDerivedCustomProperties()</code> method to set any extra custom properties.
   /// 
   /// To Use this class place the following line at the top of any class you want to log instrumentation messages from. 
-  /// 
+  /// <code>
   /// private static readonly InstrumentationLoggingBase Log = new InstrumentationLoggingBase(Assembly.GetExecutingAssembly(), LoggingConstants.ApplicationLoggingId);
-  /// 
-  /// This assumes a constant called ApplicationLoggingId is defined in a class called LoggingConstants.
+  /// </code>
+  /// This assumes a constant called <code>ApplicationLoggingId</code> is defined in a class called LoggingConstants.
   /// 
   /// </summary>
   public class InstrumentationLoggingBase : LoggingBase
