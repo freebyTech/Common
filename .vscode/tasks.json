@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/freebyTech.Common.Tests/freebyTech.Common.Tests.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
