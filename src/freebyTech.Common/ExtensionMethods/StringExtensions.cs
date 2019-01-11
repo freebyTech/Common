@@ -1,4 +1,5 @@
 ﻿using freebyTech.Common.Interfaces;
+using freebyTech.Common.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,6 +32,36 @@ namespace freebyTech.Common.ExtensionMethods
     public static bool IsNullOrEmpty(this string value)
     {
       return (string.IsNullOrEmpty(value));
+    }
+
+    [DebuggerStepThrough]
+    public static bool HasValue(this string value)
+    {
+      return !string.IsNullOrWhiteSpace(value);
+    }
+
+    /// <summary>
+    /// Ensures that a string only contains numeric values
+    /// </summary>
+    /// <returns>Input string with only numeric values, empty string if input is null or empty</returns>
+    [DebuggerStepThrough]
+    public static string EnsureNumericOnly(this string value)
+    {
+      if (string.IsNullOrEmpty(value)) return string.Empty;
+
+      return new String(value.Where(c => Char.IsDigit(c)).ToArray());
+    }
+
+    [DebuggerStepThrough]
+    public static bool IsAlpha(this string value)
+    {
+      return RegularExpressions.IsAlpha.IsMatch(value);
+    }
+
+    [DebuggerStepThrough]
+    public static bool IsAlphaNumeric(this string value)
+    {
+      return RegularExpressions.IsAlphaNumeric.IsMatch(value);
     }
 
     /// <summary>
@@ -175,6 +206,40 @@ namespace freebyTech.Common.ExtensionMethods
       if (value.IsNullOrEmpty()) return "";
 
       return (value.Trim().ToUpper());
+    }
+
+    private static bool IsWebUrlInternal(this string value, bool schemeIsOptional)
+    {
+      if (string.IsNullOrEmpty(value))
+        return false;
+
+      value = value.Trim().ToLowerInvariant();
+
+      if (schemeIsOptional && value.StartsWith("//"))
+      {
+        value = "http:" + value;
+      }
+
+      return Uri.IsWellFormedUriString(value, UriKind.Absolute) &&
+        (value.StartsWith("http://") || value.StartsWith("https://") || value.StartsWith("ftp://"));
+    }
+
+    [DebuggerStepThrough]
+    public static bool IsWebUrl(this string value)
+    {
+        return value.IsWebUrlInternal(false);
+    }
+
+    [DebuggerStepThrough]
+    public static bool IsWebUrl(this string value, bool schemeIsOptional)
+    {
+      return value.IsWebUrlInternal(schemeIsOptional);
+    }
+
+    [DebuggerStepThrough]
+    public static bool IsEmail(this string value)
+    {
+      return !string.IsNullOrEmpty(value) && RegularExpressions.IsEmail.IsMatch(value.Trim());
     }
 
     /// <summary>
@@ -379,6 +444,24 @@ namespace freebyTech.Common.ExtensionMethods
             if (arg.IsNullOrEmpty()) return false;
             if (arg.CompareNoCase("false") || arg == "0" || arg.CompareNoCase("f") || arg.CompareNoCase("n") || arg.CompareNoCase("no")) return true;
             return false;
+        }
+
+        /// <summary>
+        /// Converts a text value into a passed enum type if possible or the specified default value.
+        /// </summary>
+        [DebuggerStepThrough]
+        public static T ToEnum<T>(this string value, T defaultValue)
+        {
+          if (!value.HasValue()) return defaultValue;
+          
+          try
+          {
+            return (T)Enum.Parse(typeof(T), value, true);
+          }
+          catch (ArgumentException)
+          {
+            return defaultValue;
+          }
         }
 
         public static string WrapAtLines(this string text, int lineLength)
