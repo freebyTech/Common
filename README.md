@@ -27,12 +27,12 @@ dotnet test
 docker build ./src -t freebyTech/common
 ```
 
-# Pulling this package form NuGet
+# Pulling this package from NuGet
 The standard released version of this package can be referenced in a project by pulling it from NuGet.
 ```
 # VS Code or command line usage
 dotnet add package freebyTech.Common
 
-# Visual Studio *Package Manager Console*
+# Visual Studio Package Manager Console
 install-package freebyTech.Common
 ```
