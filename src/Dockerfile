@@ -19,7 +19,7 @@ ENV PACKAGE_ID=${PACKAGE_ID}
 # copy everything else and build library
 WORKDIR /lib/freebyTech.Common
 COPY ./freebyTech.Common/. .
-RUN dotnet build -o
+RUN dotnet build
 
 # copy unit test project and run tests
 WORKDIR /lib/freebyTech.Common.Tests
