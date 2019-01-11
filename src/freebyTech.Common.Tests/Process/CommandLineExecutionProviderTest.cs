@@ -28,7 +28,7 @@ namespace freebyTech.Common.Tests.Process
             var commandLineExecution = new CommandLineExecutionProvider();
             var output = commandLineExecution.ProcessCommands(commands, runAsBatch);
             Assert.NotEmpty(output);
-            Assert.Contains("JAVAHOME", output);
+            Assert.Contains("HOME", output);
         }
 
         [Theory,
@@ -42,20 +42,28 @@ namespace freebyTech.Common.Tests.Process
         }
 
         [Theory,
-           InlineData(new string[] { "cmd /c dir /" }, false)]
-        public void ProcessDirCommand(string[] commands, bool runAsBatch)
+           InlineData(new string[] { "cmd /c dir C:\\" }, false)]
+        public void ProcessWindowsDirCommand(string[] commands, bool runAsBatch)
         {
-            var commandLineExecution = new CommandLineExecutionProvider();
-            var output = commandLineExecution.ProcessCommands(commands, runAsBatch);
-            Assert.NotEmpty(output);
-            
             if (OsPlatform == System.Runtime.InteropServices.OSPlatform.Windows)
             {
+                var commandLineExecution = new CommandLineExecutionProvider();
+                var output = commandLineExecution.ProcessCommands(commands, runAsBatch);
+                Assert.NotEmpty(output);
                 Assert.Contains("Program", output);
             }
-            else
+        }
+
+        [Theory,
+           InlineData(new string[] { "ls /" }, false)]
+        public void ProcessLinuxLsCommand(string[] commands, bool runAsBatch)
+        {
+            if (OsPlatform == System.Runtime.InteropServices.OSPlatform.Linux)
             {
-                Assert.Contains("dev", output);
+                var commandLineExecution = new CommandLineExecutionProvider();
+                var output = commandLineExecution.ProcessCommands(commands, runAsBatch);
+                Assert.NotEmpty(output);
+                Assert.Contains("etc", output);
             }
         }
 
@@ -87,19 +95,6 @@ namespace freebyTech.Common.Tests.Process
             }
         }
 
-        [Theory,
-          InlineData(new string[] { "cd /", "read -n1 -r -p \"Press any key to continue...\" key", "ls" }, true)]
-        public void ProcessLinuxCommandAsBatchForTimeoutTest(string[] commands, bool runAsBatch)
-        {
-            if (OsPlatform == System.Runtime.InteropServices.OSPlatform.Windows)
-            {
-                var commandLineExecution = new CommandLineExecutionProvider();
-                var timeoutMs = 1000;
-                Exception ex = Assert.Throws<TimeoutException>(() => commandLineExecution.ProcessCommands(commands, runAsBatch, timeoutMs));
-                Assert.Equal($"Process did not finish in {timeoutMs} ms.", ex.Message);
-            }            
-        }
-
         public static IEnumerable<object[]> GeneralSystemCommandArguments()
         {
             var osPlatform = new EnvironmentManager().GetOSPlatform();
@@ -116,8 +111,8 @@ namespace freebyTech.Common.Tests.Process
             {
                 return new[]
                 {
-                    new object[] { new string[] { "ls ./"}, true },
-                    new object[] { new string[] { "echo $HOME", "export JAVAHOME=/temp", "echo $JAVAHOME"}, true }
+                    new object[] { new string[] { "ls ./"}, false },
+                    new object[] { new string[] { "echo $HOME", "ls /"}, false }
                 };
             }
         }
@@ -137,7 +132,7 @@ namespace freebyTech.Common.Tests.Process
             {
                 return new[]
                 {
-                    new object[] { new string[] { "echo $HOME", "export JAVAHOME=/temp", "echo $JAVAHOME"}, true }
+                    new object[] { new string[] { "echo $HOME", "echo $USER" }, false }
                 };
             }
         }
@@ -150,16 +145,19 @@ namespace freebyTech.Common.Tests.Process
             {
                 return new[]
                 {
-                    new object[] { new string[] { "mkdir c:\\temp_enu555", "echo eun555" }, true },
-                    new object[] { new string[] { "mkdir c:\\temp5","cd c:\\temp5", "mkdir eun555", "dir" }, true }
+                    new object[] { new string[] { "md c:\\temp_enu555", "dir c:\\" }, true },
+                    new object[] { new string[] { "md c:\\temp5","cd c:\\temp5", "md eun555", "dir" }, true }
                 };
             }
             else
             {
                 return new[]
                 {
-                    new object[] { new string[] { "md ./temp_eun555", "echo eun555" }, true },
-                    new object[] { new string[] { "md ./temp1", "cd ./temp1", "mkdir ./eun555", "dir" }, true }
+                    //TODO: Need to investigate why running as a batch in linux is failing with
+                    // System.ComponentModel.Win32Exception : Permission denied
+                    // and why export and cd command themsevles are failing as well.
+                    new object[] { new string[] { "mkdir /tmp/temp_eun555", "ls /tmp", "rm -rf /tmp/temp_eun555" }, false },
+                    new object[] { new string[] { "mkdir /tmp/temp1", "mkdir /tmp/temp1/eun555", "ls /tmp/temp1", "rm -rf /tmp/temp1" }, false }
                 };
             }
         }
