@@ -1,4 +1,5 @@
-﻿using freebyTech.Common.Process;
+﻿using freebyTech.Common.Environment;
+using freebyTech.Common.Process;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -75,12 +76,23 @@ namespace freebyTech.Common.Tests.Process
         }
         public static IEnumerable<object[]> SystemCommandArguments()
         {
-            var systemCommandArgument =new[]
+            var osPlatform = new EnvironmentManager().GetOSPlatform();
+
+            if(osPlatform == System.Runtime.InteropServices.OSPlatform.Windows)
             {
-               new object[] { new string[] { "dir c:\\"}, true },
-               new object[] { new string[] { "echo %HOME%", "set JAVAHOME=\"C:\\Temp\"", "echo %JAVAHOME%"}, true }
-            };
-            return systemCommandArgument;
+                return new[]
+                {
+                    new object[] { new string[] { "dir c:\\"}, true },
+                    new object[] { new string[] { "echo %HOME%", "set JAVAHOME=\"C:\\Temp\"", "echo %JAVAHOME%"}, true }
+                };
+            }
+            else {
+                return new[]
+                {
+                    new object[] { new string[] { "ls ./"}, true },
+                    new object[] { new string[] { "echo $HOME", "export JAVAHOME=/temp", "echo $JAVAHOME"}, true }
+                };
+            }
         }
     }
 }
