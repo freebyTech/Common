@@ -6,9 +6,9 @@ using System.Net;
 using System.Net.Mail;
 using System.Collections.Specialized;
 
-namespace freebyTech.Common.Services
+namespace freebyTech.Common.Messaging.Mail
 {
-    public class MailService
+    internal class SmtpMailService
     {
         public static void SendMail(string subject, string receivers, string from, string messageBody, bool isHtmlBody, string smtpServer, int port, string userName, string password, bool enableSSL)
         {

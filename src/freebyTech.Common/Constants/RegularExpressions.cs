@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace freebyTech.Common.Services
+namespace freebyTech.Common.Constants
 {
     public static class RegularExpressions
     {
