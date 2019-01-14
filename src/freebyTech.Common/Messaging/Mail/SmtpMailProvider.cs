@@ -43,7 +43,7 @@ namespace freebyTech.Common.Messaging.Mail
 
         private void LogSend(string subject, string from, string receivers)
         {
-            _logger?.LogInformation($"Attempting to send a message with subject '{subject}' from '{from}' to '{receivers}'  via server '{_mailOptions?.SmtpServer}' on port '{_mailOptions?.SmtpPort} with SmtpEnableSSL = {_mailOptions?.SmtpEnableSSL}.");
+            _logger?.LogInformation($"Attempting to send a message with subject '{subject}' from '{from}' to '{receivers}' via server '{_mailOptions?.SmtpServer}' on port '{_mailOptions?.SmtpPort} with user '{_mailOptions?.SmtpUserName} SmtpEnableSSL = {_mailOptions?.SmtpEnableSSL}.");
         }
     }
 }
