@@ -27,23 +27,24 @@ namespace freebyTech.Common.Messaging.Mail
         ILogger _logger { get; set; }
         public SmtpMailProvider(IOptionsMonitor<SmtpMailOptions> mailOptionsAccessor, ILogger<SmtpMailProvider> logger) {
             _mailOptions = mailOptionsAccessor.CurrentValue;
+            _logger = logger;
         }
 
-        public void SendMail(string subject, string receivers, string from, string messageBody, bool isHtmlBody)
+        public void SendMail(string subject, string receivers, string messageBody, bool isHtmlBody)
         {
-            LogSend(subject, from, receivers);
-            SmtpMailService.SendMail(subject, receivers, from, messageBody, isHtmlBody, _mailOptions.SmtpServer, _mailOptions.SmtpPort, _mailOptions.SmtpUserName, _mailOptions.SmtpPassword, _mailOptions.SmtpEnableSSL);
+            LogSend(subject, receivers);
+            SmtpMailService.SendMail(subject, receivers, _mailOptions.SmtpUserName, messageBody, isHtmlBody, _mailOptions.SmtpServer, _mailOptions.SmtpPort, _mailOptions.SmtpUserName, _mailOptions.SmtpPassword, _mailOptions.SmtpEnableSSL);
         }
 
-        public void SendMail(string subject, string receivers, string from, string htmlTemplate, NameValueCollection expansionValues, bool isHtmlBody)
+        public void SendMail(string subject, string receivers, string htmlTemplate, NameValueCollection expansionValues, bool isHtmlBody)
         {
-            LogSend(subject, from, receivers);
-            SmtpMailService.SendMail(subject, receivers, from, htmlTemplate, expansionValues, isHtmlBody, _mailOptions.SmtpServer, _mailOptions.SmtpPort, _mailOptions.SmtpUserName, _mailOptions.SmtpPassword, _mailOptions.SmtpEnableSSL);
+            LogSend(subject, receivers);
+            SmtpMailService.SendMail(subject, receivers, _mailOptions.SmtpUserName, htmlTemplate, expansionValues, isHtmlBody, _mailOptions.SmtpServer, _mailOptions.SmtpPort, _mailOptions.SmtpUserName, _mailOptions.SmtpPassword, _mailOptions.SmtpEnableSSL);
         }
 
-        private void LogSend(string subject, string from, string receivers)
+        private void LogSend(string subject, string receivers)
         {
-            _logger?.LogInformation($"Attempting to send a message with subject '{subject}' from '{from}' to '{receivers}' via server '{_mailOptions?.SmtpServer}' on port '{_mailOptions?.SmtpPort} with user '{_mailOptions?.SmtpUserName} SmtpEnableSSL = {_mailOptions?.SmtpEnableSSL}.");
+            _logger?.LogInformation($"Attempting to send a message with subject '{subject}' from '{_mailOptions?.SmtpUserName}' to '{receivers}' via server '{_mailOptions?.SmtpServer}' on port '{_mailOptions?.SmtpPort} with user '{_mailOptions?.SmtpUserName} SmtpEnableSSL = {_mailOptions?.SmtpEnableSSL}.");
         }
     }
 }
