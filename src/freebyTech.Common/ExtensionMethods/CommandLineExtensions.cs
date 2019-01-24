@@ -41,7 +41,7 @@ namespace freebyTech.Common.ExtensionMethods
             var sb = new StringBuilder($"  --{arg.Command}");
             if (!arg.CommandValueName.IsNullOrEmpty())
             {
-                sb.Append($":{arg.CommandValueName}");
+                sb.Append($":[{arg.CommandValueName}]");
             }
             else if (!arg.SwitchMapping.IsNullOrEmpty())
             {

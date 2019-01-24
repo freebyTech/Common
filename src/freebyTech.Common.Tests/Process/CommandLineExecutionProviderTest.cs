@@ -2,6 +2,7 @@
 using freebyTech.Common.Process;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using Xunit;
 
@@ -10,6 +11,40 @@ namespace freebyTech.Common.Tests.Process
     public class CommandLineExecutionProviderTest
     {
         OSPlatform OsPlatform { get; } = new EnvironmentManager().GetOSPlatform();
+
+        public CommandLineExecutionProviderTest() {
+            setup();            
+        }
+
+        ~CommandLineExecutionProviderTest() {
+            cleanup();
+        }
+
+        private string GetBasePathForOS() {
+            if (OsPlatform == System.Runtime.InteropServices.OSPlatform.Windows)
+            {
+                return "C:\\temp\\unit-tests-clep";
+            }
+            else
+            {
+                return "/tmp/unit-tests-clep";
+            }
+        }
+
+        private void setup()
+        {
+            cleanup();
+            Directory.CreateDirectory(GetBasePathForOS());
+        }
+
+        private void cleanup()
+        {
+            try
+            {
+                Directory.Delete(GetBasePathForOS(), true);
+            }
+            catch  {}
+        }
 
         public static string today = System.DateTime.Now.ToShortDateString();
         [Theory,
@@ -68,7 +103,7 @@ namespace freebyTech.Common.Tests.Process
         }
 
         [Theory,
-        InlineData(new string[] { "cmd /c cd c:\\temp", "cmd /c mkdir c:\\temp\\blob", "cmd /c dir c:\\temp" }, false)]
+        InlineData(new string[] { "cmd /c cd c:\\temp", "cmd /c mkdir c:\\temp\\unit-tests-clep\\blob", "cmd /c dir c:\\temp\\unit-tests-clep" }, false)]
         public void ProcessWindowsFileSystemCommands(string[] commands, bool runAsBatch)
         {
             if (OsPlatform == System.Runtime.InteropServices.OSPlatform.Windows)
@@ -145,8 +180,8 @@ namespace freebyTech.Common.Tests.Process
             {
                 return new[]
                 {
-                    new object[] { new string[] { "md c:\\temp_enu555", "dir c:\\" }, true },
-                    new object[] { new string[] { "md c:\\temp5","cd c:\\temp5", "md eun555", "dir" }, true }
+                    new object[] { new string[] { "md c:\\temp\\unit-tests-clep\\temp_eun555", "dir c:\\temp\\unit-tests-clep" }, true },
+                    new object[] { new string[] { "md c:\\temp\\unit-tests-clep\\temp5","cd c:\\unit-tests-clep\\temp5", "md eun555", "dir" }, true }
                 };
             }
             else
@@ -156,8 +191,8 @@ namespace freebyTech.Common.Tests.Process
                     //TODO: Need to investigate why running as a batch in linux is failing with
                     // System.ComponentModel.Win32Exception : Permission denied
                     // and why export and cd command themsevles are failing as well.
-                    new object[] { new string[] { "mkdir /tmp/temp_eun555", "ls /tmp", "rm -rf /tmp/temp_eun555" }, false },
-                    new object[] { new string[] { "mkdir /tmp/temp1", "mkdir /tmp/temp1/eun555", "ls /tmp/temp1", "rm -rf /tmp/temp1" }, false }
+                    new object[] { new string[] { "mkdir /tmp/unit-tests-clep/temp_eun555", "ls /tmp/unit-tests-clep", "rm -rf /tmp/unit-tests-clep/temp_eun555" }, false },
+                    new object[] { new string[] { "mkdir /tmp/unit-tests-clep/temp1", "mkdir /tmp/unit-tests-clep/temp1/eun555", "ls /tmp/unit-tests-clep/temp1", "rm -rf /tmp/unit-tests-clep/temp1" }, false }
                 };
             }
         }

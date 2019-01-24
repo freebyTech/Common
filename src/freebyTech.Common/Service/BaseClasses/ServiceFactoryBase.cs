@@ -172,14 +172,14 @@ namespace freebyTech.Common.Service.BaseClasses
                 {
                     foreach (var arg in commandCollection.AvailableArguments)
                     {
-                        if (!arg.SwitchMapping.IsNullOrEmpty()) _switchMappingsCache.Add($"-{arg.SwitchMapping}", arg.CommandValueName);
+                        if (!arg.SwitchMapping.IsNullOrEmpty()) _switchMappingsCache.Add($"-{arg.SwitchMapping}", arg.Command);
                     }
                 }
                 foreach (var commandCollection in BasicCommandLineOptions)
                 {
                     foreach (var arg in commandCollection.AvailableArguments)
                     {
-                        if (!arg.SwitchMapping.IsNullOrEmpty()) _switchMappingsCache.Add($"-{arg.SwitchMapping}", arg.CommandValueName);
+                        if (!arg.SwitchMapping.IsNullOrEmpty()) _switchMappingsCache.Add($"-{arg.SwitchMapping}", arg.Command);
                     }
                 }
             }
