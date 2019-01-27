@@ -2,7 +2,7 @@
 
 namespace freebyTech.Common.Logging
 {
-  public class ApplicationLoggingMetrics
+  public class StaticApplicationLoggingMetrics
   {
     #region Static Properties
 

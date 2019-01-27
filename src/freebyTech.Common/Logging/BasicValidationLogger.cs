@@ -4,6 +4,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using freebyTech.Common.Logging.Interfaces;
 
 namespace freebyTech.Common.Logging
 {
@@ -15,18 +16,23 @@ namespace freebyTech.Common.Logging
     /// You can also subclass this class to define your own Validation logging, just override the
     /// SetDerivedCustomProperties() method to set any extra custom properties.
     /// 
-    /// To Use this class place the following line at the top of any class you want to log validation messages from. 
+    /// To Use this class register its type with the IServiceCollection during ConfigureServices like this:
+    ///
+    /// <code>
+    ///   services.AddScoped<IValidationLogger, BasicValidationLogger>((ctx) =>
+    ///   {
+    ///       return new BasicValidationLogger(parentApplication, applicationLogginId);
+    ///   });
+    /// </code>
     /// 
-    /// private static readonly ValidationLoggingBase Log = new ValidationLoggingBase(Assembly.GetExecutingAssembly(), LoggingConstants.ApplicationLoggingId);
-    /// 
-    /// This assumes a constant called ApplicationLoggingId is defined in a class called LoggingConstants.
+    /// You can also register this class by running <code>services.AddBasicLoggingServices()</code>
     /// 
     /// </summary>
-    public class ValidationLoggingBase : LoggingBase
+    public class BasicValidationLogger : LoggingBase, IValidationLogger
     {
-        public ValidationLoggingBase(Assembly parentApplication, string applicationLoggingId) : base(parentApplication, LoggingMessageTypes.Validation.ToString(), applicationLoggingId) { }
+        public BasicValidationLogger(Assembly parentApplication, string applicationLoggingId) : base(parentApplication, LoggingMessageTypes.Validation.ToString(), applicationLoggingId) { }
 
-        public ValidationLoggingBase(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Validation.ToString(), applicationLoggingId) { }
+        public BasicValidationLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Validation.ToString(), applicationLoggingId) { }
 
         protected sealed override void SetCustomProperties(LogEventInfo logEvent)
         {

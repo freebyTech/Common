@@ -2,30 +2,36 @@
 using System.Diagnostics;
 using System.Reflection;
 using freebyTech.Common.ExtensionMethods;
+using freebyTech.Common.Logging.Interfaces;
 using NLog;
 
 namespace freebyTech.Common.Logging
 {
-  /// <summary>
-  /// 
-  /// This class provides the base for instrumentation logging services for an application,
-  /// it also sets the proper message type to "Instrumentation" in log message payloads.
-  /// 
-  /// You use this class directly or subclass this class to define your own instrumentation logging, just override the
-  /// <code>SetDerivedCustomProperties()</code> method to set any extra custom properties.
-  /// 
-  /// To Use this class place the following line at the top of any class you want to log instrumentation messages from. 
-  /// <code>
-  /// private static readonly InstrumentationLoggingBase Log = new InstrumentationLoggingBase(Assembly.GetExecutingAssembly(), LoggingConstants.ApplicationLoggingId);
-  /// </code>
-  /// This assumes a constant called <code>ApplicationLoggingId</code> is defined in a class called LoggingConstants.
-  /// 
-  /// </summary>
-  public class InstrumentationLoggingBase : LoggingBase
+    /// <summary>
+    /// 
+    /// This class provides the base for instrumentation logging services for an application,
+    /// it also sets the proper message type to "Instrumentation" in log message payloads.
+    /// 
+    /// You use this class directly or subclass this class to define your own instrumentation logging, just override the
+    /// <code>SetDerivedCustomProperties()</code> method to set any extra custom properties.
+    /// 
+    /// To Use this class register its type with the IServiceCollection during ConfigureServices like this:
+    ///
+    /// <code>
+    ///   services.AddScoped<IInstrumentationLogger, BasicInstrumentationLogger>((ctx) =>
+    ///   {
+    ///       return new BasicInstrumentationLogger(parentApplication, applicationLogginId);
+    ///   });
+    /// </code>
+    /// 
+    /// You can also register this class by running <code>services.AddBasicLoggingServices()</code>
+    /// 
+    /// </summary>
+    public class BasicInstrumentationLogger : LoggingBase, IInstrumentationLogger
   {
-    public InstrumentationLoggingBase(Assembly parentApplication, string applicationLoggingId) : base(parentApplication, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId) { }
+    public BasicInstrumentationLogger(Assembly parentApplication, string applicationLoggingId) : base(parentApplication, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId) { }
 
-    public InstrumentationLoggingBase(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId) { }
+    public BasicInstrumentationLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId) { }
 
     #region Properties
 
