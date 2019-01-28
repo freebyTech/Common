@@ -12,22 +12,22 @@ namespace freebyTech.Common.ExtensionMethods
     {
         public static void AddBasicLoggingServices(this IServiceCollection services, Assembly parentApplication, string applicationLogginId)
         {
-            services.AddScoped<IBasicLogger, BasicLogger>((ctx) =>
+            services.AddTransient<IBasicLogger, BasicLogger>((ctx) =>
             {
                 return new BasicLogger(parentApplication, applicationLogginId);
             });
 
-            services.AddScoped<IInstrumentationLogger, BasicInstrumentationLogger>((ctx) =>
+            services.AddTransient<IInstrumentationLogger, BasicInstrumentationLogger>((ctx) =>
             {
                 return new BasicInstrumentationLogger(parentApplication, applicationLogginId);
             });
 
-            services.AddScoped<IRunMetricsLogger, BasicRunMetricsLogger>((ctx) =>
+            services.AddTransient<IRunMetricsLogger, BasicRunMetricsLogger>((ctx) =>
             {
                 return new BasicRunMetricsLogger(parentApplication, applicationLogginId);
             });
 
-            services.AddScoped<IValidationLogger, BasicValidationLogger>((ctx) =>
+            services.AddTransient<IValidationLogger, BasicValidationLogger>((ctx) =>
             {
                 return new BasicValidationLogger(parentApplication, applicationLogginId);
             });
