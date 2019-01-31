@@ -5,7 +5,7 @@ using freebyTech.Common.Logging.Interfaces;
 using freebyTech.Common.ExtensionMethods;
 using NLog;
 
-namespace freebyTech.Common.Logging.FrameworkAgents.NLog
+namespace freebyTech.Common.Logging.FrameworkAgents
 {
     /// <summary>
     /// This interface represents an actual logging agent that takes the logging abstraction and translates it to each framework.
@@ -16,8 +16,8 @@ namespace freebyTech.Common.Logging.FrameworkAgents.NLog
             LogManager.GetLogger(loggerName).Log(GenericToSpecific(logEvent));
         }
 
-        private LogEventInfo GenericToSpecific(GenericLogEventInfo logEvent) {
-            var logEventInfo = new LogEventInfo(LogLevel.FromOrdinal(logEvent.LogLevel.Ordinal), logEvent.MessageType, logEvent.Message);
+        private static LogEventInfo GenericToSpecific(GenericLogEventInfo logEvent) {
+            var logEventInfo = new LogEventInfo(LogLevel.FromOrdinal((int)logEvent.LogLevel), logEvent.MessageType, logEvent.Message);
 
             if (logEvent.Exception != null)
             {
@@ -33,7 +33,7 @@ namespace freebyTech.Common.Logging.FrameworkAgents.NLog
             return logEventInfo;
         }
 
-        private string AggregatePushLogItems(List<PushLogItem> pushLogItems)
+        private static string AggregatePushLogItems(List<PushLogItem> pushLogItems)
         {
             if (pushLogItems == null || pushLogItems.Count == 0) { return string.Empty; }
             var sb = new StringBuilder();
@@ -41,10 +41,10 @@ namespace freebyTech.Common.Logging.FrameworkAgents.NLog
             foreach (var item in pushLogItems)
             {
                 if(!item.Key.IsNullOrEmpty()) {
-                    sb.AppendLine($"{item.LogLevel?.Name.SafeToUpper()} -- {item.Key} -- {item.Value} [{item.DurationMs} ms]");
+                    sb.AppendLine($"{item.LogLevel.ToString()} -- {item.Key} -- {item.Value} [{item.DurationMs} ms]");
                 }
                 else {
-                    sb.AppendLine($"{item.LogLevel?.Name.SafeToUpper()} -- {item.Line} [{item.DurationMs} ms]");
+                    sb.AppendLine($"{item.LogLevel.ToString()} -- {item.Line} [{item.DurationMs} ms]");
                 }             
             }
             return sb.ToString();

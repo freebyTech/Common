@@ -5,12 +5,32 @@ using System.Text;
 using freebyTech.Common.Logging;
 using freebyTech.Common.Logging.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using freebyTech.Common.Logging.FrameworkAgents.NLog;
+using freebyTech.Common.Logging.FrameworkAgents;
 
 namespace freebyTech.Common.ExtensionMethods
 {
     public static class ServiceRegistrationExtensions
     {
+        /// <summary>
+        /// If using this ILogFrameworkAgent type then NLog dependencies must be added to your project.
+        /// </summary>
+        public static void AddNLogFrameworkAgent(this IServiceCollection services)
+        {
+            services.AddSingleton<ILogFrameworkAgent, NLogFrameworkAgent>();
+        }
+
+        /// <summary>
+        /// If using this ILogFrameworkAgent type then Serilog dependencies must be added to your project.
+        /// </summary>
+        public static void AddSerilogFrameworkAgent(this IServiceCollection services)
+        {
+            services.AddSingleton<ILogFrameworkAgent, SerilogFrameworkAgent>();
+        }
+
+        /// <summary>
+        /// Adds standard logging types to dependency injection, the specific ILogFrameworkAgent must be defined before this
+        /// as that agent needs to be passed on to these logger types defined.
+        /// </summary>
         public static void AddBasicLoggingServices(this IServiceCollection services, Assembly parentApplication, string applicationLogginId)
         {
             var serviceProvider = services.BuildServiceProvider();
@@ -34,15 +54,6 @@ namespace freebyTech.Common.ExtensionMethods
             {
                 return new BasicValidationLogger(parentApplication, applicationLogginId, serviceProvider.GetService<ILogFrameworkAgent>());
             });
-        }
-
-
-        /// <summary>
-        /// If using this ILogFrameworkAgent type then NLog must be used as a dependency.
-        /// </summary>
-        public static void AddNLogFrameworkAgent(this IServiceCollection services)
-        {
-            services.AddSingleton<ILogFrameworkAgent, NLogFrameworkAgent>();
         }
     }
 }

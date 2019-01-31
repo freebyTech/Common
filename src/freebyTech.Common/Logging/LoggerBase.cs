@@ -578,19 +578,19 @@ namespace freebyTech.Common.Logging
 
         private void BumpLogCount(GenericLogLevel logLevel)
         {
-            switch (logLevel.Name)
+            switch (logLevel)
             {
-                case "Error":
+                case GenericLogLevel.Error:
                     StaticApplicationLoggingMetrics.ErrorCount++; break;
-                case "Info":
+                case GenericLogLevel.Info:
                     StaticApplicationLoggingMetrics.InfoCount++; break;
-                case "Trace":
+                case GenericLogLevel.Trace:
                     StaticApplicationLoggingMetrics.TraceCount++; break;
-                case "Debug":
+                case GenericLogLevel.Debug:
                     StaticApplicationLoggingMetrics.DebugCount++; break;
-                case "Warn":
+                case GenericLogLevel.Warn:
                     StaticApplicationLoggingMetrics.WarnCount++; break;
-                case "Fatal":
+                case GenericLogLevel.Fatal:
                     StaticApplicationLoggingMetrics.FatalCount++; break;
                 default: break;
             }
@@ -627,19 +627,19 @@ namespace freebyTech.Common.Logging
 
         private static int GetSeverityLevel(GenericLogLevel logLevel)
         {
-            switch (logLevel.Name)
+            switch (logLevel)
             {
-                case "Trace":
+                case GenericLogLevel.Trace:
                     return 0;
-                case "Debug":
+                case GenericLogLevel.Debug:
                     return 0;
-                case "Info":
+                case GenericLogLevel.Info:
                     return 10;
-                case "Warn":
+                case GenericLogLevel.Warn:
                     return 30;
-                case "Error":
+                case GenericLogLevel.Error:
                     return 30;
-                case "Fatal":
+                case GenericLogLevel.Fatal:
                     return 40;
             }
             return 0;
