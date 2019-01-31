@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using freebyTech.Common.Logging.Core;
 
 namespace freebyTech.Common.Logging.Interfaces
 {
@@ -57,6 +58,11 @@ namespace freebyTech.Common.Logging.Interfaces
         /// <summary>
         /// If true, will log or push a line of seperator characters when a LogX or PushX method is run with an empty string.
         /// </summary>
+        bool LogDurationInPushes { get; set; }
+
+        /// <summary>
+        /// If true, will log or push a line of seperator characters when a LogX or PushX method is run with an empty string.
+        /// </summary>
         bool SeperatorLineOnEmptyLog { get; set; }
 
         /// <summary>
@@ -68,6 +74,17 @@ namespace freebyTech.Common.Logging.Interfaces
         /// The length of seperator lines to write when doing empty writes or generating headers.
         /// </summary>
         int SeperatorLineLength { get; set; }
+
+        /// <summary>
+        /// Resets the duration of the logger.
+        /// </summary>
+        void RestartDuration();
+
+        /// <summary>
+        /// Gets info about the current duration of the logger.
+        /// </summary>
+        LoggerDuration GetDuration();
+
 
         void PushTrace(string key, string value);
         void PushDebug(string key, string value);

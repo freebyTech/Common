@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using freebyTech.Common.Logging.Core;
 
 namespace freebyTech.Common.Logging.Interfaces
 {

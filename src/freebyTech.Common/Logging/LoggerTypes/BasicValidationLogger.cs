@@ -3,10 +3,11 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using freebyTech.Common.Logging.Interfaces;
 using System.Collections.Generic;
+using freebyTech.Common.Logging.Core;
+using freebyTech.Common.Logging.Interfaces;
 
-namespace freebyTech.Common.Logging
+namespace freebyTech.Common.Logging.LoggerTypes
 {
     /// <summary>
     /// 

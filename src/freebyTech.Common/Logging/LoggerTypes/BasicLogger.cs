@@ -1,8 +1,9 @@
 ﻿using System.Reflection;
+using freebyTech.Common.Logging.Core;
 using freebyTech.Common.Logging.Interfaces;
 using System.Collections.Generic;
 
-namespace freebyTech.Common.Logging
+namespace freebyTech.Common.Logging.LoggerTypes
 {
     /// <summary>
     /// 

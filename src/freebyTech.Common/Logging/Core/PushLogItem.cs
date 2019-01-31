@@ -1,4 +1,4 @@
-namespace freebyTech.Common.Logging.Interfaces
+namespace freebyTech.Common.Logging.Core
 {
     public class PushLogItem
     {

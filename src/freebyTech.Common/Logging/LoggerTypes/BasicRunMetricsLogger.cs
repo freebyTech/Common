@@ -1,9 +1,10 @@
-﻿using freebyTech.Common.Logging.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using freebyTech.Common.Logging.Core;
+using freebyTech.Common.Logging.Interfaces;
 
-namespace freebyTech.Common.Logging
+namespace freebyTech.Common.Logging.LoggerTypes
 {
     /// <summary>
     /// 

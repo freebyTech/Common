@@ -1,4 +1,4 @@
-namespace freebyTech.Common.Logging.Interfaces
+namespace freebyTech.Common.Logging.Core
 {
     /// <summary>
     /// An enum defining LogLevels not tied to any specific implementation of logging.

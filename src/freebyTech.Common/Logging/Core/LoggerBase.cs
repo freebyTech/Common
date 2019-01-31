@@ -5,10 +5,10 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using freebyTech.Common.ExtensionMethods;
+using freebyTech.Common.Logging.Core;
 using freebyTech.Common.Logging.Interfaces;
-//using NLog;
 
-namespace freebyTech.Common.Logging
+namespace freebyTech.Common.Logging.Core
 {
     /// <summary>
     /// This is the abstract base class for all Logging Class Types.
@@ -19,7 +19,6 @@ namespace freebyTech.Common.Logging
 
         private List<PushLogItem> _pushLogItems { get; set; } = new List<PushLogItem>();
         
-
         private Stopwatch SW { get; set; }
 
         private ILogFrameworkAgent _frameworkLogger;
@@ -32,28 +31,36 @@ namespace freebyTech.Common.Logging
         {
             BuildLoggerInfo(messageType, applicationLoggingId);
             BuildApplicationInfo(parentApplication);
-            SeperatorLineOnEmptyLog = true;
-            SeperatorChar = SeperatorLineChars.Line;
-            SeperatorLineLength = 80;
             _frameworkLogger = frameworkLogger;
-            RestartDuration();
+            ConstructCommon();
         }
 
         protected LoggerBase(string parentApplicationName, string parentApplicationVersion, string messageType, string applicationLoggingId, ILogFrameworkAgent frameworkLogger)
         {
             BuildLoggerInfo(messageType, applicationLoggingId);
             BuildApplicationInfo(parentApplicationName, parentApplicationVersion);
+            _frameworkLogger = frameworkLogger;
+            ConstructCommon();
+        }
+
+        private void ConstructCommon()
+        {
+            SW = Stopwatch.StartNew();
             SeperatorLineOnEmptyLog = true;
             SeperatorChar = SeperatorLineChars.Line;
             SeperatorLineLength = 80;
-            _frameworkLogger = frameworkLogger;
-            RestartDuration();
+            LogDurationInPushes = true;
         }
 
         #endregion
 
         public void RestartDuration() {
-            SW = Stopwatch.StartNew();
+            SW.Restart();
+        }
+
+        public LoggerDuration GetDuration() 
+        {
+            return new LoggerDuration { Ms = SW.ElapsedMilliseconds, Minutes = SW.Elapsed.TotalMinutes };
         }
 
         #region Properties of the LogEventInfo
@@ -136,11 +143,18 @@ namespace freebyTech.Common.Logging
         /// <summary>
         /// If true, will log or push a line of seperator characters when a LogX or PushX method is run with an empty string.
         /// </summary>
+        public bool LogDurationInPushes { get; set; }
+
+        /// <summary>
+        /// If true, will log or push a line of seperator characters when a LogX or PushX method is run with an empty string.
+        /// </summary>
         public bool SeperatorLineOnEmptyLog { get; set; }
+
         /// <summary>
         /// The seperator character to use for empty writes and also headers.
         /// </summary>
         public char SeperatorChar { get; set; }
+
         /// <summary>
         /// The length of seperator lines to write when doing empty writes or generating headers.
         /// </summary>
@@ -175,7 +189,13 @@ namespace freebyTech.Common.Logging
 
         private void PushValue(GenericLogLevel level, string key, string value)
         {
-            _pushLogItems.Add(new PushLogItem(level, key, value, SW.ElapsedMilliseconds));
+            if(LogDurationInPushes) {
+                _pushLogItems.Add(new PushLogItem(level, key, value, SW.ElapsedMilliseconds));
+            }
+            else {
+                _pushLogItems.Add(new PushLogItem(level, key, value, -1));
+            }
+            
         }
 
         public void PushTrace(string key, string value)
@@ -214,7 +234,12 @@ namespace freebyTech.Common.Logging
                 line = SeperatorChar.MakeLine(SeperatorLineLength);
             }
 
-            _pushLogItems.Add(new PushLogItem(level, line, SW.ElapsedMilliseconds));
+            if(LogDurationInPushes) {
+                _pushLogItems.Add(new PushLogItem(level, line, SW.ElapsedMilliseconds));
+            }
+            else {
+                _pushLogItems.Add(new PushLogItem(level, line, -1));
+            }            
         }
 
         public void PushTrace(string line)

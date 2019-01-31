@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using freebyTech.Common.ExtensionMethods;
+using freebyTech.Common.Logging.Core;
 using freebyTech.Common.Logging.Interfaces;
 
-namespace freebyTech.Common.Logging
+namespace freebyTech.Common.Logging.LoggerTypes
 {
     /// <summary>
     /// 
@@ -29,9 +30,15 @@ namespace freebyTech.Common.Logging
     /// </summary>
     public class BasicInstrumentationLogger : LoggerBase, IInstrumentationLogger
   {
-    public BasicInstrumentationLogger(Assembly parentApplication, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplication, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId, frameworkLogger) { }
+    public BasicInstrumentationLogger(Assembly parentApplication, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplication, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId, frameworkLogger) 
+    {
+      LogDurationInPushes = true;
+    }
 
-    public BasicInstrumentationLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId, frameworkLogger) { }
+    public BasicInstrumentationLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId, frameworkLogger)
+    {
+      LogDurationInPushes = true;
+    }
 
     #region Properties
 
@@ -47,15 +54,13 @@ namespace freebyTech.Common.Logging
 
     #region Instrumentation Logging Methods
 
-    public Stopwatch SW { get; private set; }
-
     /// <summary>
     /// Initializes this class using the method's call signature as the signature for the log message.
     /// </summary>
     /// <param name="mb"></param>
-    public void InitializeExecutionLogging(MethodBase mb)
+    public void SetMethodName(MethodBase mb)
     {
-      SW = Stopwatch.StartNew();
+      RestartDuration();
       var methodWithReturnType = mb as MethodInfo;
       MethodSignature = methodWithReturnType != null ? methodWithReturnType.MethodSignature() : mb.MethodSignature();
     }
@@ -64,9 +69,9 @@ namespace freebyTech.Common.Logging
     /// Initializes this class using a custom "method description" as the signature for the log message.
     /// </summary>
     /// <param name="methodDescription"></param>
-    public void InitializeExecutionLogging(string methodDescription)
+    public void SetMethodSignature(string methodDescription)
     {
-      SW = Stopwatch.StartNew();
+      RestartDuration();
       MethodSignature = methodDescription;
     }
 
@@ -75,8 +80,6 @@ namespace freebyTech.Common.Logging
     /// </summary>
     public void Restart()
     {
-      if(SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-
       ExecutionTime = 0;
       ExecutionTimeMinutes = 0.0;
       ItemCount = 0;
@@ -84,15 +87,14 @@ namespace freebyTech.Common.Logging
       FailedItemCount = 0;
       FailedByteCount = 0;
 
-      SW.Restart();
+      RestartDuration();
     }
 
-    public void LogInfoWithTime(string message, string data = null, bool resetStopwatch = false, long itemCount = 0, long byteCount = 0, long failedItemCount = 0, long failedByteCount = 0)
+    public void LogInfoWithTime(string message, string data = null, bool restartDuration = false, long itemCount = 0, long byteCount = 0, long failedItemCount = 0, long failedByteCount = 0)
     {
-      if(SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-
-      ExecutionTime = SW.ElapsedMilliseconds;
-      ExecutionTimeMinutes = SW.Elapsed.TotalMinutes;
+      var duration = GetDuration();
+      ExecutionTime = duration.Ms;
+      ExecutionTimeMinutes = duration.Minutes;
       ItemCount = itemCount;
       ByteCount = byteCount;
       FailedItemCount = failedItemCount;
@@ -100,98 +102,44 @@ namespace freebyTech.Common.Logging
 
       LogInfo(message, data);
 
-      if (resetStopwatch)
-      {
-        SW.Restart();
-      }
+      if (restartDuration) RestartDuration();
     }
 
-    public void PushInfoWithTime(string message)
+    public void LogWarnWithTime(string message, string data = null, bool restartDuration = false, long itemCount = 0, long byteCount = 0, long failedItemCount = 0, long failedByteCount = 0)
     {
-      if(SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-      
-      PushInfo(SW.AddTimeToMessage(message));
-    }
-
-    public void PushInfoWithTime(string key, string value)
-    {
-      if(SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-      
-      PushInfo(key, SW.AddTimeToMessage(value));
-    }
-
-    public void LogWarnWithTime(string message, string data = null, bool resetStopwatch = false, long itemCount = 0, long byteCount = 0, long failedItemCount = 0, long failedByteCount = 0)
-    {
-      if(SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-      
-      ExecutionTime = SW.ElapsedMilliseconds;
-      ExecutionTimeMinutes = SW.Elapsed.TotalMinutes;
+      var duration = GetDuration();
+      ExecutionTime = duration.Ms;
+      ExecutionTimeMinutes = duration.Minutes;
       ItemCount = itemCount;
       ByteCount = byteCount;
       FailedItemCount = failedItemCount;
       FailedByteCount = failedByteCount;
 
       LogWarn(message, data);
-      if (resetStopwatch)
-      {
-        SW.Restart();
-      }
+      if (restartDuration) RestartDuration();
     }
 
-    public void PushWarnWithTime(string message)
+    public void LogErrorWithTime(string message, string data = null, Exception exceptionInfo = null, bool restartDuration = false, long itemCount = 0, long byteCount = 0, long failedItemCount = 0, long failedByteCount = 0)
     {
-      if(SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-      
-      PushWarn(SW.AddTimeToMessage(message));
-    }
+      var duration = GetDuration();
+      ExecutionTime = duration.Ms;
+      ExecutionTimeMinutes = duration.Minutes;
 
-    public void PushWarnWithTime(string key, string value)
-    {
-      if(SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-      
-      PushWarn(key, SW.AddTimeToMessage(value));
-    }
-
-    public void LogErrorWithTime(string message, string data = null, Exception exceptionInfo = null, bool resetStopwatch = false, long itemCount = 0, long byteCount = 0, long failedItemCount = 0, long failedByteCount = 0)
-    {
-      if(SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-      
-      ExecutionTime = SW.ElapsedMilliseconds;
-      ExecutionTimeMinutes = SW.Elapsed.TotalMinutes;
       ItemCount = itemCount;
       ByteCount = byteCount;
       FailedItemCount = failedItemCount;
       FailedByteCount = failedByteCount;
 
       LogError(message, exceptionInfo, data);
-      if (resetStopwatch)
-      {
-        SW.Restart();
-      }
-    }
-
-    public void PushErrorWithTime(string message)
-    {
-      if(SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-      
-      PushError(SW.AddTimeToMessage(message));
-    }
-
-    public void PushErrorWithTime(string key, string value)
-    {
-      if(SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-      
-      PushError(key, SW.AddTimeToMessage(value));
+      if (restartDuration) RestartDuration();
     }
 
     public void LogExecutionComplete(long itemCount = 1, long byteCount = 0, string data = null, long failedItemCount = 0, long failedByteCount = 0)
     {
-      if (SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-      
-      SW.Stop();
+      var duration = GetDuration();
+      ExecutionTime = duration.Ms;
+      ExecutionTimeMinutes = duration.Minutes;
 
-      ExecutionTime = SW.ElapsedMilliseconds;
-      ExecutionTimeMinutes = SW.Elapsed.TotalMinutes;
       ItemCount = itemCount;
       ByteCount = byteCount;
       FailedItemCount = failedItemCount;
@@ -202,12 +150,10 @@ namespace freebyTech.Common.Logging
 
     public void LogExecutionCompleteAsWarn(long itemCount = 1, long byteCount = 0, string data = null, long failedItemCount = 0, long failedByteCount = 0, Exception exceptionInfo = null)
     {
-      if (SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
+      var duration = GetDuration();
+      ExecutionTime = duration.Ms;
+      ExecutionTimeMinutes = duration.Minutes;
 
-      SW.Stop();
-
-      ExecutionTime = SW.ElapsedMilliseconds;
-      ExecutionTimeMinutes = SW.Elapsed.TotalMinutes;
       ItemCount = itemCount;
       ByteCount = byteCount;
       FailedItemCount = failedItemCount;
@@ -218,12 +164,10 @@ namespace freebyTech.Common.Logging
 
     public void LogExecutionCompleteAsError(long itemCount = 0, long byteCount = 0, string data = null, long failedItemCount = 1, long failedByteCount = 0, Exception exceptionInfo = null)
     {
-      if (SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-      
-      SW.Stop();
+      var duration = GetDuration();
+      ExecutionTime = duration.Ms;
+      ExecutionTimeMinutes = duration.Minutes;
 
-      ExecutionTime = SW.ElapsedMilliseconds;
-      ExecutionTimeMinutes = SW.Elapsed.TotalMinutes;
       ItemCount = itemCount;
       ByteCount = byteCount;
       FailedItemCount = failedItemCount;
@@ -234,12 +178,10 @@ namespace freebyTech.Common.Logging
 
     public void LogExecutionCompleteAsFatal(long itemCount = 0, long byteCount = 0, string data = null, long failedItemCount = 1, long failedByteCount = 0, Exception exceptionInfo = null)
     {
-      if (SW == null) throw new InvalidOperationException($"{nameof(InitializeExecutionLogging)} has not been called.");
-      
-      SW.Stop();
+      var duration = GetDuration();
+      ExecutionTime = duration.Ms;
+      ExecutionTimeMinutes = duration.Minutes;
 
-      ExecutionTime = SW.ElapsedMilliseconds;
-      ExecutionTimeMinutes = SW.Elapsed.TotalMinutes;
       ItemCount = itemCount;
       ByteCount = byteCount;
       FailedItemCount = failedItemCount;

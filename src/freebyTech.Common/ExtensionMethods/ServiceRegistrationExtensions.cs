@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using freebyTech.Common.Logging;
-using freebyTech.Common.Logging.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using freebyTech.Common.Logging.Core;
+using freebyTech.Common.Logging.Interfaces;
 using freebyTech.Common.Logging.FrameworkAgents;
+using freebyTech.Common.Logging.LoggerTypes;
 
 namespace freebyTech.Common.ExtensionMethods
 {

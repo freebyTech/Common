@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace freebyTech.Common.Logging.Interfaces
+namespace freebyTech.Common.Logging.Core
 {
     /// <summary>
     /// A class defining LogLevels not tied to any specific implementation of logging.

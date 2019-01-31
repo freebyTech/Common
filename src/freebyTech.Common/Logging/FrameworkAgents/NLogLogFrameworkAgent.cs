@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using freebyTech.Common.Logging.Core;
 using freebyTech.Common.Logging.Interfaces;
 using freebyTech.Common.ExtensionMethods;
 using NLog;
