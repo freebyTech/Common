@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using freebyTech.Common.ExtensionMethods;
 using freebyTech.Common.Logging.Interfaces;
-using NLog;
 
 namespace freebyTech.Common.Logging
 {
@@ -27,11 +27,11 @@ namespace freebyTech.Common.Logging
     /// You can also register this class by running <code>services.AddBasicLoggingServices()</code>
     /// 
     /// </summary>
-    public class BasicInstrumentationLogger : LoggingBase, IInstrumentationLogger
+    public class BasicInstrumentationLogger : LoggerBase, IInstrumentationLogger
   {
-    public BasicInstrumentationLogger(Assembly parentApplication, string applicationLoggingId) : base(parentApplication, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId) { }
+    public BasicInstrumentationLogger(Assembly parentApplication, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplication, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId, frameworkLogger) { }
 
-    public BasicInstrumentationLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId) { }
+    public BasicInstrumentationLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId, frameworkLogger) { }
 
     #region Properties
 
@@ -253,16 +253,16 @@ namespace freebyTech.Common.Logging
 
     #region Override Methods
 
-    protected sealed override void SetCustomProperties(LogEventInfo logEvent)
+    protected sealed override void SetCustomProperties(Dictionary<string, object> customProperties)
     {
-      logEvent.Properties["methodSignature"] = MethodSignature;
-      logEvent.Properties["executionTimeMS"] = ExecutionTime;
-      logEvent.Properties["executionTimeMinutes"] = ExecutionTimeMinutes;
-      logEvent.Properties["itemCount"] = ItemCount;
-      logEvent.Properties["byteCount"] = ByteCount;
-      logEvent.Properties["failedItemCount"] = FailedItemCount;
-      logEvent.Properties["failedByteCount"] = FailedByteCount;
-      SetDerivedClassCustomProperties(logEvent);
+      customProperties["methodSignature"] = MethodSignature;
+      customProperties["executionTimeMS"] = ExecutionTime;
+      customProperties["executionTimeMinutes"] = ExecutionTimeMinutes;
+      customProperties["itemCount"] = ItemCount;
+      customProperties["byteCount"] = ByteCount;
+      customProperties["failedItemCount"] = FailedItemCount;
+      customProperties["failedByteCount"] = FailedByteCount;
+      SetDerivedClassCustomProperties(customProperties);
     }
 
     /// <summary>
@@ -270,12 +270,12 @@ namespace freebyTech.Common.Logging
     /// than in SetCustomProperties which is already being used by this class.
     /// </summary>
     /// <param name="logEvent"></param>
-    protected virtual void SetDerivedClassCustomProperties(LogEventInfo logEvent)
+    protected virtual void SetDerivedClassCustomProperties(Dictionary<string, object> customProperties)
     {
 
     }
 
     #endregion
 
-  }
+    }
 }

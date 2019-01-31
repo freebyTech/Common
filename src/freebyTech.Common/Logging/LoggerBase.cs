@@ -1,46 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Reflection;
 using System.Text;
 using freebyTech.Common.ExtensionMethods;
 using freebyTech.Common.Logging.Interfaces;
-using NLog;
+//using NLog;
 
 namespace freebyTech.Common.Logging
 {
     /// <summary>
     /// This is the abstract base class for all Logging Class Types.
     /// </summary>
-    public abstract class LoggingBase : IBasicLogger
+    public abstract class LoggerBase : IBasicLogger
     {
         #region Private Variables
 
-        private List<string> _pushQueue;
+        private List<PushLogItem> _pushLogItems { get; set; } = new List<PushLogItem>();
+        
+
+        private Stopwatch SW { get; set; }
+
+        private ILogFrameworkAgent _frameworkLogger;
 
         #endregion
 
         #region Constructors
 
-        protected LoggingBase(Assembly parentApplication, string messageType, string applicationLoggingId)
+        protected LoggerBase(Assembly parentApplication, string messageType, string applicationLoggingId, ILogFrameworkAgent frameworkLogger)
         {
             BuildLoggerInfo(messageType, applicationLoggingId);
             BuildApplicationInfo(parentApplication);
             SeperatorLineOnEmptyLog = true;
             SeperatorChar = SeperatorLineChars.Line;
             SeperatorLineLength = 80;
+            _frameworkLogger = frameworkLogger;
+            RestartDuration();
         }
 
-        protected LoggingBase(string parentApplicationName, string parentApplicationVersion, string messageType, string applicationLoggingId)
+        protected LoggerBase(string parentApplicationName, string parentApplicationVersion, string messageType, string applicationLoggingId, ILogFrameworkAgent frameworkLogger)
         {
             BuildLoggerInfo(messageType, applicationLoggingId);
             BuildApplicationInfo(parentApplicationName, parentApplicationVersion);
             SeperatorLineOnEmptyLog = true;
             SeperatorChar = SeperatorLineChars.Line;
             SeperatorLineLength = 80;
+            _frameworkLogger = frameworkLogger;
+            RestartDuration();
         }
 
         #endregion
+
+        public void RestartDuration() {
+            SW = Stopwatch.StartNew();
+        }
 
         #region Properties of the LogEventInfo
 
@@ -136,12 +150,12 @@ namespace freebyTech.Common.Logging
 
         #region Queue Count Properties
 
-        public int PushLogQueueCount
+        public int PushLogCount
         {
             get
             {
-                if (_pushQueue == null) return 0;
-                return _pushQueue.Count;
+                if (_pushLogItems == null) return 0;
+                return _pushLogItems.Count;
             }
         }
 
@@ -153,127 +167,110 @@ namespace freebyTech.Common.Logging
         /// This must override method is what sets custom properties in the log event based upon derived Logging type.
         /// </summary>
         /// <param name="logEventInfo"></param>
-        protected abstract void SetCustomProperties(LogEventInfo logEventInfo);
+        protected abstract void SetCustomProperties(Dictionary<string, object> customProperties);
 
         #endregion
 
         #region Push Data Methods
 
-        private void PushData(LogLevel level, string key, string value)
+        private void PushValue(GenericLogLevel level, string key, string value)
         {
-            PushData(ref _pushQueue, $"{level.Name.ToUpper()} -- {key}", value);
+            _pushLogItems.Add(new PushLogItem(level, key, value, SW.ElapsedMilliseconds));
         }
 
-        private void PushData(ref List<string> data, string key, string value)
-        {
-            if (data == null)
-            {
-                data = new List<string>();
-            }
-            data.Add(key + " -- " + value);
-        }
         public void PushTrace(string key, string value)
         {
-            PushData(LogLevel.Trace, key, value);
+            PushValue(GenericLogLevel.Trace, key, value);
         }
         public void PushDebug(string key, string value)
         {
-            PushData(LogLevel.Debug, key, value);
+            PushValue(GenericLogLevel.Debug, key, value);
         }
         public void PushInfo(string key, string value)
         {
-            PushData(LogLevel.Info, key, value);
+            PushValue(GenericLogLevel.Info, key, value);
         }
         public void PushError(string key, string value)
         {
-            PushData(LogLevel.Error, key, value);
+            PushValue(GenericLogLevel.Error, key, value);
         }
         public void PushWarn(string key, string value)
         {
-            PushData(LogLevel.Warn, key, value);
+            PushValue(GenericLogLevel.Warn, key, value);
         }
         public void PushFatal(string key, string value)
         {
-            PushData(LogLevel.Fatal, key, value);
+            PushValue(GenericLogLevel.Fatal, key, value);
         }
 
         #endregion
 
         #region Push Line Methods
 
-        private void PushLine(LogLevel level, string line)
+        private void PushLine(GenericLogLevel level, string line)
         {
             if (string.IsNullOrEmpty(line) && SeperatorLineOnEmptyLog)
             {
                 line = SeperatorChar.MakeLine(SeperatorLineLength);
             }
 
-            PushLine(ref _pushQueue, $"{level.Name.ToUpper()} -- {line}");
-        }
-
-        private void PushLine(ref List<string> data, string line)
-        {
-            if (data == null)
-            {
-                data = new List<string>();
-            }
-            data.Add(line);
+            _pushLogItems.Add(new PushLogItem(level, line, SW.ElapsedMilliseconds));
         }
 
         public void PushTrace(string line)
         {
-            PushLine(LogLevel.Trace, line);
+            PushLine(GenericLogLevel.Trace, line);
         }
         public void PushTrace()
         {
-            PushLine(LogLevel.Trace, string.Empty);
+            PushLine(GenericLogLevel.Trace, string.Empty);
         }
         public void PushDebug(string line)
         {
-            PushLine(LogLevel.Debug, line);
+            PushLine(GenericLogLevel.Debug, line);
         }
         public void PushDebug()
         {
-            PushLine(LogLevel.Debug, string.Empty);
+            PushLine(GenericLogLevel.Debug, string.Empty);
         }
         public void PushInfo(string line)
         {
-            PushLine(LogLevel.Info, line);
+            PushLine(GenericLogLevel.Info, line);
         }
         public void PushInfo()
         {
-            PushLine(LogLevel.Info, string.Empty);
+            PushLine(GenericLogLevel.Info, string.Empty);
         }
         public void PushError(string line)
         {
-            PushLine(LogLevel.Error, line);
+            PushLine(GenericLogLevel.Error, line);
         }
         public void PushError()
         {
-            PushLine(LogLevel.Error, string.Empty);
+            PushLine(GenericLogLevel.Error, string.Empty);
         }
         public void PushWarn(string line)
         {
-            PushLine(LogLevel.Warn, line);
+            PushLine(GenericLogLevel.Warn, line);
         }
         public void PushWarn()
         {
-            PushLine(LogLevel.Warn, string.Empty);
+            PushLine(GenericLogLevel.Warn, string.Empty);
         }
         public void PushFatal(string line)
         {
-            PushLine(LogLevel.Fatal, line);
+            PushLine(GenericLogLevel.Fatal, line);
         }
         public void PushFatal()
         {
-            PushLine(LogLevel.Fatal, string.Empty);
+            PushLine(GenericLogLevel.Fatal, string.Empty);
         }
 
         #endregion
 
         #region Push Header Methods
 
-        private void PushHeader(LogLevel level, string line)
+        private void PushHeader(GenericLogLevel level, string line)
         {
             PushLine(level, string.Empty);
             PushLine(level, EncloseMessageInHeader(line));
@@ -282,27 +279,27 @@ namespace freebyTech.Common.Logging
 
         public void PushHeaderTrace(string line)
         {
-            PushHeader(LogLevel.Trace, line);
+            PushHeader(GenericLogLevel.Trace, line);
         }
         public void PushHeaderDebug(string line)
         {
-            PushHeader(LogLevel.Debug, line);
+            PushHeader(GenericLogLevel.Debug, line);
         }
         public void PushHeaderInfo(string line)
         {
-            PushHeader(LogLevel.Info, line);
+            PushHeader(GenericLogLevel.Info, line);
         }
         public void PushHeaderError(string line)
         {
-            PushHeader(LogLevel.Error, line);
+            PushHeader(GenericLogLevel.Error, line);
         }
         public void PushHeaderWarn(string line)
         {
-            PushHeader(LogLevel.Warn, line);
+            PushHeader(GenericLogLevel.Warn, line);
         }
         public void PushHeaderFatal(string line)
         {
-            PushLine(LogLevel.Fatal, line);
+            PushLine(GenericLogLevel.Fatal, line);
         }
 
         #endregion
@@ -311,7 +308,7 @@ namespace freebyTech.Common.Logging
 
         public void ClearQueueData()
         {
-            _pushQueue = null;
+            _pushLogItems = new List<PushLogItem>();
         }
 
         /// <summary>
@@ -346,7 +343,7 @@ namespace freebyTech.Common.Logging
 
         #region Log Header Methods
 
-        private void LogHeader(LogLevel level, string message)
+        private void LogHeader(GenericLogLevel level, string message)
         {
             LogThis(CreateLogEvent(level, string.Empty, null, null));
             LogThis(CreateLogEvent(level, EncloseMessageInHeader(message), null, null));
@@ -355,27 +352,27 @@ namespace freebyTech.Common.Logging
 
         public void LogHeaderTrace(string line)
         {
-            LogHeader(LogLevel.Trace, line);
+            LogHeader(GenericLogLevel.Trace, line);
         }
         public void LogHeaderDebug(string line)
         {
-            LogHeader(LogLevel.Debug, line);
+            LogHeader(GenericLogLevel.Debug, line);
         }
         public void LogHeaderInfo(string line)
         {
-            LogHeader(LogLevel.Info, line);
+            LogHeader(GenericLogLevel.Info, line);
         }
         public void LogHeaderError(string line)
         {
-            LogHeader(LogLevel.Error, line);
+            LogHeader(GenericLogLevel.Error, line);
         }
         public void LogHeaderWarn(string line)
         {
-            LogHeader(LogLevel.Warn, line);
+            LogHeader(GenericLogLevel.Warn, line);
         }
         public void LogHeaderFatal(string line)
         {
-            LogHeader(LogLevel.Fatal, line);
+            LogHeader(GenericLogLevel.Fatal, line);
         }
 
         private string EncloseMessageInHeader(string message)
@@ -416,7 +413,7 @@ namespace freebyTech.Common.Logging
 
         public void LogTrace(string message, string data)
         {
-            LogThis(CreateLogEvent(LogLevel.Trace, message, null, data));
+            LogThis(CreateLogEvent(GenericLogLevel.Trace, message, null, data));
         }
 
         #endregion
@@ -435,7 +432,7 @@ namespace freebyTech.Common.Logging
         }
         public void LogDebug(string message, string data)
         {
-            LogThis(CreateLogEvent(LogLevel.Debug, message, null, data));
+            LogThis(CreateLogEvent(GenericLogLevel.Debug, message, null, data));
         }
 
         #endregion
@@ -456,7 +453,7 @@ namespace freebyTech.Common.Logging
 
         public void LogInfo(string message, string data)
         {
-            LogThis(CreateLogEvent(LogLevel.Info, message, null, data));
+            LogThis(CreateLogEvent(GenericLogLevel.Info, message, null, data));
         }
 
         #endregion
@@ -476,12 +473,12 @@ namespace freebyTech.Common.Logging
 
         public void LogWarn(string message, string data)
         {
-            LogThis(CreateLogEvent(LogLevel.Warn, message, null, data));
+            LogThis(CreateLogEvent(GenericLogLevel.Warn, message, null, data));
         }
 
         public void LogWarn(string message, string data, Exception exceptionInfo)
         {
-            LogThis(CreateLogEvent(LogLevel.Warn, message, exceptionInfo, data));
+            LogThis(CreateLogEvent(GenericLogLevel.Warn, message, exceptionInfo, data));
         }
 
         #endregion
@@ -506,12 +503,12 @@ namespace freebyTech.Common.Logging
 
         public void LogError(string message, Exception ex)
         {
-            LogThis(CreateLogEvent(LogLevel.Error, message, ex, string.Empty));
+            LogThis(CreateLogEvent(GenericLogLevel.Error, message, ex, string.Empty));
         }
 
         public void LogError(string message, Exception ex, string data)
         {
-            LogThis(CreateLogEvent(LogLevel.Error, message, ex, data));
+            LogThis(CreateLogEvent(GenericLogLevel.Error, message, ex, data));
         }
 
         #endregion
@@ -536,12 +533,12 @@ namespace freebyTech.Common.Logging
 
         public void LogFatal(string message, Exception ex)
         {
-            LogThis(CreateLogEvent(LogLevel.Fatal, message, ex, string.Empty));
+            LogThis(CreateLogEvent(GenericLogLevel.Fatal, message, ex, string.Empty));
         }
 
         public void LogFatal(string message, Exception ex, string data)
         {
-            LogThis(CreateLogEvent(LogLevel.Fatal, message, ex, data));
+            LogThis(CreateLogEvent(GenericLogLevel.Fatal, message, ex, data));
         }
 
         #endregion
@@ -569,17 +566,17 @@ namespace freebyTech.Common.Logging
             ApplicationName = overrideApplicationName;
         }
 
-        private void LogThis(LogEventInfo logEvent)
+        private void LogThis(GenericLogEventInfo logEvent)
         {
             try
             {
-                BumpLogCount(logEvent.Level);
-                LogManager.GetLogger(FullLoggingName).Log(logEvent);
+                BumpLogCount(logEvent.LogLevel);
+                _frameworkLogger.Log(FullLoggingName, logEvent);
             }
             catch (Exception) { }
         }
 
-        private void BumpLogCount(LogLevel logLevel)
+        private void BumpLogCount(GenericLogLevel logLevel)
         {
             switch (logLevel.Name)
             {
@@ -599,41 +596,36 @@ namespace freebyTech.Common.Logging
             }
         }
 
-        private LogEventInfo CreateLogEvent(LogLevel level, string message, Exception ex, string data)
+        private List<PushLogItem> GetPushLog() {
+            var pl = _pushLogItems;
+            _pushLogItems = new List<PushLogItem>();
+            return pl;
+        }
+
+        private GenericLogEventInfo CreateLogEvent(GenericLogLevel level, string message, Exception ex, string data)
         {
             message = GetMessage(message);
 
-            var logEventInfo = new LogEventInfo(level, MessageType, message);
+            var logEventInfo = new GenericLogEventInfo(level, MessageType, message, data, ex, GetPushLog());
 
-            if (ex != null)
-            {
-                logEventInfo.Exception = ex;
-            }
+            logEventInfo.ExtraProperties["severity"] = GetSeverityLevel(level);
+            logEventInfo.ExtraProperties["applicationLoggingId"] = ApplicationLoggingId;
+            logEventInfo.ExtraProperties["messageType"] = MessageType;
+            logEventInfo.ExtraProperties["applicationName"] = ApplicationName;
+            logEventInfo.ExtraProperties["applicationVersion"] = ApplicationVersion;
+            logEventInfo.ExtraProperties["fullLoggingName"] = FullLoggingName;
+            logEventInfo.ExtraProperties["loggingAssemblyVersion"] = LoggingAssemblyVersion;
+            logEventInfo.ExtraProperties["userName"] = UserName;
+            logEventInfo.ExtraProperties["processName"] = ProcessName;
+            logEventInfo.ExtraProperties["hostName"] = HostName;
+            logEventInfo.ExtraProperties["data"] = data;
 
-            if (!string.IsNullOrEmpty(data) && PushLogQueueCount > 0)
-            {
-                data = $"{data}\n";
-            }
-            data += GetEventData(level);
-
-            logEventInfo.Properties["severity"] = GetSeverityLevel(level);
-            logEventInfo.Properties["applicationLoggingId"] = ApplicationLoggingId;
-            logEventInfo.Properties["messageType"] = MessageType;
-            logEventInfo.Properties["applicationName"] = ApplicationName;
-            logEventInfo.Properties["applicationVersion"] = ApplicationVersion;
-            logEventInfo.Properties["fullLoggingName"] = FullLoggingName;
-            logEventInfo.Properties["loggingAssemblyVersion"] = LoggingAssemblyVersion;
-            logEventInfo.Properties["userName"] = UserName;
-            logEventInfo.Properties["processName"] = ProcessName;
-            logEventInfo.Properties["hostName"] = HostName;
-            logEventInfo.Properties["data"] = data;
-
-            SetCustomProperties(logEventInfo);
+            SetCustomProperties(logEventInfo.ExtraProperties);
 
             return logEventInfo;
         }
 
-        private static int GetSeverityLevel(LogLevel logLevel)
+        private static int GetSeverityLevel(GenericLogLevel logLevel)
         {
             switch (logLevel.Name)
             {
@@ -648,7 +640,7 @@ namespace freebyTech.Common.Logging
                 case "Error":
                     return 30;
                 case "Fatal":
-                    return 30;
+                    return 40;
             }
             return 0;
         }
@@ -662,26 +654,7 @@ namespace freebyTech.Common.Logging
 
             message = SeperatorChar.MakeLine(SeperatorLineLength);
             return message;
-        }
-
-        private string GetEventData(LogLevel level)
-        {
-            return AggregatePushData(ref _pushQueue);
-        }
-
-        private string AggregatePushData(ref List<string> data)
-        {
-            if (data == null) { return string.Empty; }
-            var sb = new StringBuilder();
-
-            foreach (var line in data)
-            {
-                sb.AppendLine(line);
-            }
-            //Set data to null to clear out list after logging.
-            data = null;
-            return sb.ToString();
-        }
+        }       
 
         #endregion
     }

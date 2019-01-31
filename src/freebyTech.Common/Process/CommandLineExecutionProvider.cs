@@ -123,11 +123,11 @@ namespace freebyTech.Common.Process
 
                 return outputBuilder.ToString();
             }
-            catch (InvalidOperationException iEx)
+            catch (InvalidOperationException)
             {
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -157,7 +157,7 @@ namespace freebyTech.Common.Process
                 
                 output = RunSingleProcess(newCommand, processTimeoutMs);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -242,7 +242,7 @@ namespace freebyTech.Common.Process
 
                 return output;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                // Console.WriteLine(e.Message);
                 throw;

@@ -1,6 +1,6 @@
 ﻿using freebyTech.Common.Logging.Interfaces;
-using NLog;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace freebyTech.Common.Logging
@@ -25,11 +25,11 @@ namespace freebyTech.Common.Logging
     /// You can also register this class by running <code>services.AddBasicLoggingServices()</code>
     /// 
     /// </summary>
-    public class BasicRunMetricsLogger : LoggingBase, IRunMetricsLogger
+    public class BasicRunMetricsLogger : LoggerBase, IRunMetricsLogger
   {
-    public BasicRunMetricsLogger(Assembly parentApplication, string applicationLoggingId) : base(parentApplication, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId){}
+    public BasicRunMetricsLogger(Assembly parentApplication, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplication, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId, frameworkLogger){}
 
-    public BasicRunMetricsLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId) { }
+    public BasicRunMetricsLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Instrumentation.ToString(), applicationLoggingId, frameworkLogger) { }
 
     /// <summary>
     /// Will Log all Application run statistics into an instrumentation message.
@@ -76,23 +76,23 @@ namespace freebyTech.Common.Logging
 
     #region Override Methods
 
-    protected sealed override void SetCustomProperties(LogEventInfo logEvent)
+    protected sealed override void SetCustomProperties(Dictionary<string, object> customProperties)
     {
       // Set the properties for centralized logging.
-      logEvent.Properties["startTime"] = StaticApplicationLoggingMetrics.StartTime.ToString();
+      customProperties["startTime"] = StaticApplicationLoggingMetrics.StartTime.ToString();
       if (StaticApplicationLoggingMetrics.EndTime.HasValue)
       {
-        logEvent.Properties["endTime"] = StaticApplicationLoggingMetrics.EndTime.Value.ToString();
+        customProperties["endTime"] = StaticApplicationLoggingMetrics.EndTime.Value.ToString();
       }
-      logEvent.Properties["executionTimeMinutes"] = StaticApplicationLoggingMetrics.TotalTime().TotalMinutes;
-      logEvent.Properties["executionTimeMS"] = StaticApplicationLoggingMetrics.TotalTime().Milliseconds;
-      logEvent.Properties["fatalLogCount"] = StaticApplicationLoggingMetrics.FatalCount;
-      logEvent.Properties["errorLogCount"] = StaticApplicationLoggingMetrics.ErrorCount;
-      logEvent.Properties["warnLogCount"] = StaticApplicationLoggingMetrics.WarnCount;
-      logEvent.Properties["infoLogCount"] = StaticApplicationLoggingMetrics.InfoCount;
-      logEvent.Properties["debugLogCount"] = StaticApplicationLoggingMetrics.DebugCount;
-      logEvent.Properties["traceLogCount"] = StaticApplicationLoggingMetrics.TraceCount;
-      SetDerivedClassCustomProperties(logEvent);
+      customProperties["executionTimeMinutes"] = StaticApplicationLoggingMetrics.TotalTime().TotalMinutes;
+      customProperties["executionTimeMS"] = StaticApplicationLoggingMetrics.TotalTime().Milliseconds;
+      customProperties["fatalLogCount"] = StaticApplicationLoggingMetrics.FatalCount;
+      customProperties["errorLogCount"] = StaticApplicationLoggingMetrics.ErrorCount;
+      customProperties["warnLogCount"] = StaticApplicationLoggingMetrics.WarnCount;
+      customProperties["infoLogCount"] = StaticApplicationLoggingMetrics.InfoCount;
+      customProperties["debugLogCount"] = StaticApplicationLoggingMetrics.DebugCount;
+      customProperties["traceLogCount"] = StaticApplicationLoggingMetrics.TraceCount;
+      SetDerivedClassCustomProperties(customProperties);
     }
 
     /// <summary>
@@ -100,7 +100,7 @@ namespace freebyTech.Common.Logging
     /// than in SetCustomProperties which is already being used by this class.
     /// </summary>
     /// <param name="logEvent"></param>
-    protected virtual void SetDerivedClassCustomProperties(LogEventInfo logEvent)
+    protected virtual void SetDerivedClassCustomProperties(Dictionary<string, object> customProperties)
     {
 
     }

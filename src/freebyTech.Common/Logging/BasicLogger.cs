@@ -1,6 +1,6 @@
-﻿using NLog;
-using System.Reflection;
+﻿using System.Reflection;
 using freebyTech.Common.Logging.Interfaces;
+using System.Collections.Generic;
 
 namespace freebyTech.Common.Logging
 {
@@ -21,15 +21,15 @@ namespace freebyTech.Common.Logging
     /// You can also register this class by running <code>services.AddBasicLoggingServices()</code>
     /// 
     /// </summary>
-    public sealed class BasicLogger : LoggingBase
+    public sealed class BasicLogger : LoggerBase
     {
-        public BasicLogger(Assembly parentApplication, string applicationLoggingId) : base(parentApplication, LoggingMessageTypes.LogMessage.ToString(), applicationLoggingId) { }
+        public BasicLogger(Assembly parentApplication, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplication, LoggingMessageTypes.LogMessage.ToString(), applicationLoggingId, frameworkLogger) { }
 
-        public BasicLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.LogMessage.ToString(), applicationLoggingId) { }
+        public BasicLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.LogMessage.ToString(), applicationLoggingId, frameworkLogger) { }
 
         #region Override Methods
 
-        protected override void SetCustomProperties(LogEventInfo logEvent)
+        protected  override void SetCustomProperties(Dictionary<string, object> customProperties)
         {
         }
 

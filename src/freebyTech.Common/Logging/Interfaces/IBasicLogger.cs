@@ -69,7 +69,6 @@ namespace freebyTech.Common.Logging.Interfaces
         /// </summary>
         int SeperatorLineLength { get; set; }
 
-        int PushLogQueueCount { get; }
         void PushTrace(string key, string value);
         void PushDebug(string key, string value);
         void PushInfo(string key, string value);

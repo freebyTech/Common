@@ -1,10 +1,10 @@
-﻿using NLog;
-using System;
+﻿using System;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using freebyTech.Common.Logging.Interfaces;
+using System.Collections.Generic;
 
 namespace freebyTech.Common.Logging
 {
@@ -28,15 +28,15 @@ namespace freebyTech.Common.Logging
     /// You can also register this class by running <code>services.AddBasicLoggingServices()</code>
     /// 
     /// </summary>
-    public class BasicValidationLogger : LoggingBase, IValidationLogger
+    public class BasicValidationLogger : LoggerBase, IValidationLogger
     {
-        public BasicValidationLogger(Assembly parentApplication, string applicationLoggingId) : base(parentApplication, LoggingMessageTypes.Validation.ToString(), applicationLoggingId) { }
+        public BasicValidationLogger(Assembly parentApplication, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplication, LoggingMessageTypes.Validation.ToString(), applicationLoggingId, frameworkLogger) { }
 
-        public BasicValidationLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Validation.ToString(), applicationLoggingId) { }
+        public BasicValidationLogger(string parentApplicationName, string parentApplicationVersion, string applicationLoggingId, ILogFrameworkAgent frameworkLogger) : base(parentApplicationName, parentApplicationVersion, LoggingMessageTypes.Validation.ToString(), applicationLoggingId, frameworkLogger) { }
 
-        protected sealed override void SetCustomProperties(LogEventInfo logEvent)
+        protected sealed override void SetCustomProperties(Dictionary<string, object> customProperties)
         {
-            SetDerivedClassCustomProperties(logEvent);
+            SetDerivedClassCustomProperties(customProperties);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace freebyTech.Common.Logging
         /// than in SetCustomProperties which is already being used by this class.
         /// </summary>
         /// <param name="logEvent"></param>
-        protected virtual void SetDerivedClassCustomProperties(LogEventInfo logEvent)
+        protected virtual void SetDerivedClassCustomProperties(Dictionary<string, object> customProperties)
         {
 
         }

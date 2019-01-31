@@ -10,8 +10,8 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\freebyTech.Common\freebyTech.Common.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\freebyTech.Common\freebyTech.Common.csproj" />
+  </ItemGroup>
 
 </Project>
