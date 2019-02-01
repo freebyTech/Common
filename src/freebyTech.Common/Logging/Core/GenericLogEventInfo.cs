@@ -8,11 +8,12 @@ namespace freebyTech.Common.Logging.Core
     /// </summary>
     public class GenericLogEventInfo
     {
-        public GenericLogEventInfo(GenericLogLevel logLevel, string messageType, string message, string data, Exception exception, List<PushLogItem> PushLog) {
+        public GenericLogEventInfo(GenericLogLevel logLevel, string messageType, string message, string data, Exception exception, List<PushLogItem> pushLog) {
             LogLevel = logLevel;
             Message = message;
             MessageType = messageType;
             Data = data;
+            PushLog = pushLog;
         }
         public GenericLogLevel LogLevel { get; set; }
 
