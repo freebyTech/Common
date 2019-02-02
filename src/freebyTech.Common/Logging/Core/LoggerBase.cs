@@ -638,7 +638,7 @@ namespace freebyTech.Common.Logging.Core
             logEventInfo.ExtraProperties["messageType"] = MessageType;
             logEventInfo.ExtraProperties["applicationName"] = ApplicationName;
             logEventInfo.ExtraProperties["applicationVersion"] = ApplicationVersion;
-            logEventInfo.ExtraProperties["fullLoggingName"] = FullLoggingName;
+            //logEventInfo.ExtraProperties["fullLoggingName"] = FullLoggingName;
             logEventInfo.ExtraProperties["loggingAssemblyVersion"] = LoggingAssemblyVersion;
             logEventInfo.ExtraProperties["userName"] = UserName;
             logEventInfo.ExtraProperties["processName"] = ProcessName;
