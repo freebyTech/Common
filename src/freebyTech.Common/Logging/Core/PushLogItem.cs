@@ -27,11 +27,11 @@ namespace freebyTech.Common.Logging.Core
         {
             if(!Key.IsNullOrEmpty()) 
             {
-                return ($"{LogLevel.ToString()} -- {Key} - {Value} [{DurationMs} ms]");
+                return ($"{LogLevel.ToString()} -- {Key} - {Value} [{DurationMs} ms]\n");
             }
             else 
             {
-                return ($"{LogLevel.ToString()} -- {Line} [{DurationMs} ms]");
+                return ($"{LogLevel.ToString()} -- {Line} [{DurationMs} ms]\n");
             }   
         }
     }
