@@ -58,12 +58,7 @@ namespace freebyTech.Common.Logging.FrameworkAgents
 
             foreach (var item in pushLogItems)
             {
-                if(!item.Key.IsNullOrEmpty()) {
-                    sb.AppendLine($"{item.LogLevel.ToString()} -- {item.Key} -- {item.Value} [{item.DurationMs} ms]");
-                }
-                else {
-                    sb.AppendLine($"{item.LogLevel.ToString()} -- {item.Line} [{item.DurationMs} ms]");
-                }             
+                sb.AppendLine(item.ToString());          
             }
             return sb.ToString();
         }

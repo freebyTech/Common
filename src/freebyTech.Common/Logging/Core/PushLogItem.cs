@@ -1,3 +1,5 @@
+using freebyTech.Common.ExtensionMethods;
+
 namespace freebyTech.Common.Logging.Core
 {
     public class PushLogItem
@@ -20,5 +22,17 @@ namespace freebyTech.Common.Logging.Core
         public string Value { get; set; }
         public string Line { get; set; }
         public long DurationMs { get; set;}
+
+        public override string ToString()
+        {
+            if(!Key.IsNullOrEmpty()) 
+            {
+                return ($"{LogLevel.ToString()} -- {Key} - {Value} [{DurationMs} ms]");
+            }
+            else 
+            {
+                return ($"{LogLevel.ToString()} -- {Line} [{DurationMs} ms]");
+            }   
+        }
     }
 }
