@@ -5,6 +5,11 @@ using System.Text.RegularExpressions;
 
 namespace freebyTech.Common.Transformations
 {
+    /// <summary>
+    /// Inflector based extension methods, originally built off of work in:
+    /// https://github.com/markrendle/Inflector
+    /// and used for exsting DB Scaffolding (for singularization of table names).
+    /// </summary>
     public static class InflectorExtensions
     {
         #region Default Rules
@@ -160,7 +165,7 @@ namespace freebyTech.Common.Transformations
 
         public static string Titleize(this string word)
         {
-            return Regex.Replace(Humanize(Underscore(word)), @"\b([a-z])",
+            return Regex.Replace(Humanize(Underscoreize(word)), @"\b([a-z])",
                                  delegate(Match match)
                                  {
                                      return match.Captures[0].Value.ToUpper();
@@ -186,7 +191,7 @@ namespace freebyTech.Common.Transformations
             return Uncapitalize(Pascalize(lowercaseAndUnderscoredWord));
         }
 
-        public static string Underscore(this string pascalCasedWord)
+        public static string Underscoreize(this string pascalCasedWord)
         {
             return Regex.Replace(
                 Regex.Replace(

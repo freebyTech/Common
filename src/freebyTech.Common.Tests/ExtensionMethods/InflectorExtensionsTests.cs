@@ -92,6 +92,29 @@ namespace freebyTech.Common.Tests.Transformations
         }
 
         [Theory,
+            InlineData("SomeTitle", "some_title"),
+            InlineData("someTitle", "some_title"),
+            InlineData("some title", "some_title"),
+            InlineData("some title that will be underscored", "some_title_that_will_be_underscored"),
+            InlineData("SomeTitleThatWillBeUnderscored", "some_title_that_will_be_underscored")]                
+        public void TestUnderscorize(string test, string expected)
+        {
+            Assert.Equal(expected, test.Underscoreize());
+        }
+
+        [Theory,
+            InlineData("some title", "Some Title"),
+            InlineData("some-title", "Some Title"),
+            InlineData("sometitle", "Sometitle"),
+            InlineData("some-title: The begining", "Some Title: The Begining"),
+            InlineData("some_title:_the_begining", "Some Title: The Begining"),
+            InlineData("some title: The_begining", "Some Title: The Begining")]                
+        public void TestTitalize(string test, string expected)
+        {
+            Assert.Equal(expected, test.Titleize());
+        }
+
+        [Theory,
            MemberData(nameof(SingularAndPluralWords))]
         public void SingularizeTest(string singular, string plural)
         {
