@@ -4,7 +4,7 @@ using System.Net;
 using freebyTech.Common.ExtensionMethods;
 using Xunit;
 
-namespace freebyTech.Common.Tests.ExtensionMethods.StringExtensions
+namespace freebyTech.Common.Tests.ExtensionMethods
 {
     public class StringExtensionsTests
     {
