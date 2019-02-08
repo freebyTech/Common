@@ -141,9 +141,8 @@ namespace freebyTech.Common.Transformations
             string result = word;
 
             if(word == null) {
-                Console.WriteLine("word is NULL!");
-                return "";
-            } 
+                return null;
+            }
             if (!_uncountables.Contains(word.ToLower()))
             {
                 for (int i = rules.Count - 1; i >= 0; i--)
