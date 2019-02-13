@@ -36,25 +36,19 @@ namespace freebyTech.Common.ExtensionMethods
         /// <returns></returns>
         public static IConfigurationBuilder AddDefaultConfiguration(this IConfigurationBuilder configBuilder, IExecutionEnvironment executionEnvironment)
         {
-            configBuilder.SetBasePath(executionEnvironment.ServiceRootPath)
-                .AddJsonFile("appsettings.json", true, true)
-                .AddEnvironmentVariables();
-
-            if (executionEnvironment.IsDevelopment())
+            if(File.Exists(Path.Combine(executionEnvironment.ServiceRootPath, $"appsettings.json")))
             {
-                var devAppSettingsFile = Path.Combine(AppContext.BaseDirectory, $"appsettings.{executionEnvironment.EnvironmentName}.json");
-                if (File.Exists(devAppSettingsFile)) configBuilder.AddJsonFile(devAppSettingsFile);
-                else
-                {
-                    devAppSettingsFile = Path.Combine(AppContext.BaseDirectory,
-                        string.Format("..{0}..{0}..{0}", Path.DirectorySeparatorChar), $"appsettings.{executionEnvironment.EnvironmentName}.json");
-                    configBuilder.AddJsonFile(devAppSettingsFile, true);
-                }
+                configBuilder.SetBasePath(executionEnvironment.ServiceRootPath)
+                    .AddJsonFile("appsettings.json", true, true)
+                    .AddJsonFile($"appsettings.{executionEnvironment.EnvironmentName}.json", true, true)
+                    .AddEnvironmentVariables();
             }
-            else
+            else if(!executionEnvironment.StartupDirectory.CompareNoCase(executionEnvironment.ServiceRootPath))
             {
-                configBuilder
-                    .AddJsonFile($"appsettings.{executionEnvironment.EnvironmentName}.json", true);
+                configBuilder.SetBasePath(executionEnvironment.StartupDirectory)
+                    .AddJsonFile("appsettings.json", true, true)
+                    .AddJsonFile($"appsettings.{executionEnvironment.EnvironmentName}.json", true, true)
+                    .AddEnvironmentVariables();
             }
 
             return configBuilder;

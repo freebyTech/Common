@@ -11,5 +11,10 @@
         /// The root path of the service. This is the location of the binaries
         /// </summary>
         string ServiceRootPath { get; }
+
+        /// <summary>
+        /// The startup directory of the application, sometimes different than ServiceRootPath
+        /// </summary>
+        string StartupDirectory { get; }
     }
 }

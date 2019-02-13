@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using freebyTech.Common.ExtensionMethods;
 using freebyTech.Common.Interfaces;
 
@@ -18,17 +19,20 @@ namespace freebyTech.Common.Environment
 
             EnvironmentName = env;
 
-            // TODO: Directory.GetCurrentDirectory() instead?
+            // TODO:  instead?
             ServiceRootPath = AppContext.BaseDirectory;
+            StartupDirectory = Directory.GetCurrentDirectory();
         }
 
-        public ExecutionEnvironment(string environmentName, string serviceRootPath)
+        public ExecutionEnvironment(string environmentName, string serviceRootPath, string startupDirectory)
         {
             EnvironmentName = environmentName;
             ServiceRootPath = serviceRootPath;
+            StartupDirectory = startupDirectory;
         }
 
         public string EnvironmentName { get; }
         public string ServiceRootPath { get; }
+        public string StartupDirectory { get; }
     }
 }
