@@ -7,12 +7,17 @@ namespace freebyTech.Common.Data.Interfaces
     /// <summary>
     /// Interface represents all the properties that standard editable data times should implement within freebyTech systems.
     /// </summary>
-    public interface IEditableData
+    public interface IEditableModel
     {
         DateTime CreatedOn { get; set; }
         string CreatedBy { get; set; }
         DateTime? ModifiedOn { get; set; }
         string ModifiedBy { get; set; }
         byte[] Ts { get; set; }
+
+        // This properties are added after the fact by scaffolding and are used as non entity framework specific state information.
+        // These are normally not stored in the database.
+        bool IsNew { get; set; }
+        bool IsDirty { get; set; }
     }
 }

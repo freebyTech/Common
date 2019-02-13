@@ -6,12 +6,13 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using freebyTech.Common.Data.Interfaces;
+using freebyTech.Common.ExtensionMethods;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 
 namespace freebyTech.Common.Data
 {
-    public class GenericRepository<TEntity> where TEntity : class, IEditableData, IFindableByGuid
+    public class GenericRepository<TEntity> where TEntity : class, IEditableModel, IFindableByGuid
     {
         protected DbContext _dbContext;
         protected DbSet<TEntity> _dbSet;
@@ -59,13 +60,15 @@ namespace freebyTech.Common.Data
             return _dbSet.AsNoTracking().SingleOrDefault(BuildLambdaForPropertySearch(propertyName, propertyValue));
         }
 
-        public void Insert(TEntity entity)
+        public void Insert(TEntity entity, string userName)
         {
+            entity.UpdateIfEdited(userName);
             _dbSet.Add(entity);
         }
 
-        public void Update(TEntity entity)
+        public void Update(TEntity entity, string userName)
         {
+            entity.UpdateIfEdited(userName);
             _dbSet.Attach(entity).State = EntityState.Modified;
         }
 
