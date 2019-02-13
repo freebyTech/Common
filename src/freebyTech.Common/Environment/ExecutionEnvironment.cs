@@ -19,7 +19,6 @@ namespace freebyTech.Common.Environment
 
             EnvironmentName = env;
 
-            // TODO:  instead?
             ServiceRootPath = AppContext.BaseDirectory;
             StartupDirectory = Directory.GetCurrentDirectory();
         }
