@@ -13,8 +13,8 @@ namespace freebyTech.Common.Data
 {
     public class GenericRepository<TEntity> where TEntity : class, IEditableData, IFindableByGuid
     {
-        internal DbContext _dbContext;
-        internal DbSet<TEntity> _dbSet;
+        protected DbContext _dbContext;
+        protected DbSet<TEntity> _dbSet;
 
         public GenericRepository(DbContext dbContext)
         {
