@@ -66,5 +66,4 @@ namespace freebyTech.Common.ExtensionMethods
             }
         }
     }
-    }
 }
