@@ -69,7 +69,7 @@ namespace freebyTech.Common.ExtensionMethods
             }
         }
 
-        private static bool RequiresSave(IEditableModel entity)
+        public static bool RequiresSave(this IEditableModel entity)
         {
             if (entity.IsNew)
             {
