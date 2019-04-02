@@ -49,7 +49,7 @@ namespace freebyTech.Common.Data
         {
             return _dbSet.AsNoTracking().SingleOrDefault(i => i.Id == id);
         }
-        
+
         public IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
         {
             return _dbSet.AsNoTracking().Where(predicate).ToList();
@@ -60,16 +60,39 @@ namespace freebyTech.Common.Data
             return _dbSet.AsNoTracking().SingleOrDefault(BuildLambdaForPropertySearch(propertyName, propertyValue));
         }
 
+        /// <summary>
+        /// Inserts an entity into the DBSet, performs a simple insert without complex change tracking without complex change tracking of any potential children.
+        /// </summary>
+        /// <returns></returns>
         public void Insert(TEntity entity, string userName)
         {
             entity.UpdateIfEdited(userName);
             _dbSet.Add(entity);
         }
 
+        /// <summary>
+        /// Updates an entity by attaching it to the DBSet, performs a simple update without complex change tracking of any potential children.
+        /// </summary>
+        /// <returns></returns>
         public void Update(TEntity entity, string userName)
         {
             entity.UpdateIfEdited(userName);
             _dbSet.Attach(entity).State = EntityState.Modified;
+        }
+
+        /// <summary>
+        /// This method is used for complex graphs of data where the client has been keeping an accurate
+        /// track of state based upon IEditableModel settings. It should track all changes and perform
+        /// all necessary database operations.
+        /// </summary>
+        /// <returns></returns>
+        public void UpsertFromEditableModelStates(TEntity entity, string userName)
+        {
+            _dbContext.ChangeTracker.AutoDetectChangesEnabled = false;
+            _dbSet.Attach(entity);
+            _dbContext.ChangeTracker.DetectChanges();
+            _dbContext.FixStateOfTrackedEntities(userName);
+            _dbContext.SaveChanges();
         }
 
         #region Helper Methods

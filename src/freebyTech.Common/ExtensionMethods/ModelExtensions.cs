@@ -18,12 +18,14 @@ namespace freebyTech.Common.ExtensionMethods
         /// <typeparam name="TEntity"></typeparam>
         public static bool UpdateIfEdited(this IEditableModel model, string userName)
         {
-            if(model.IsNew) {
+            if (model.IsNew)
+            {
                 model.CreatedBy = userName;
                 model.CreatedOn = System.DateTime.Now;
                 return true;
             }
-            else if(model.IsDirty) {
+            else if (model.IsDirty)
+            {
                 model.ModifiedBy = userName;
                 model.ModifiedOn = System.DateTime.Now;
                 return true;
@@ -41,6 +43,7 @@ namespace freebyTech.Common.ExtensionMethods
             {
                 builder.Ignore(p => p.IsNew);
                 builder.Ignore(p => p.IsDirty);
+                builder.Ignore(p => p.IsDeleted);
 
                 builder.Property(p => p.CreatedOn)
                     .Metadata.AfterSaveBehavior = PropertySaveBehavior.Ignore;
@@ -63,6 +66,33 @@ namespace freebyTech.Common.ExtensionMethods
                     .MakeGenericType(entityType.ClrType);
                 modelBuilder.ApplyConfiguration(
                     (dynamic)Activator.CreateInstance(configurationType));
+            }
+        }
+
+        private static EntityState ConvertState(IEditableModel entity)
+        {
+            if (entity.IsNew)
+            {
+                return EntityState.Modified;
+            }
+            else if (entity.IsDirty)
+            {
+                return EntityState.Modified;
+            }
+            else if (entity.IsDeleted)
+            {
+                return EntityState.Deleted;
+            }
+            return EntityState.Unchanged;
+        }
+
+        public static void FixStateOfTrackedEntities(this DbContext context, string userName)
+        {
+            foreach (var entry in context.ChangeTracker.Entries<IEditableModel>())
+            {
+                IEditableModel stateInfo = entry.Entity;
+                stateInfo.UpdateIfEdited(userName);
+                entry.State = ConvertState(stateInfo);
             }
         }
     }
