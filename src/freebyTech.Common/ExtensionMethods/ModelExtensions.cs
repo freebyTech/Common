@@ -69,6 +69,23 @@ namespace freebyTech.Common.ExtensionMethods
             }
         }
 
+        private static bool RequiresSave(IEditableModel entity)
+        {
+            if (entity.IsNew)
+            {
+                return true;
+            }
+            else if (entity.IsDirty)
+            {
+                return true;
+            }
+            else if (entity.IsDeleted)
+            {
+                return true;
+            }
+            return false;
+        }
+
         private static EntityState ConvertState(IEditableModel entity)
         {
             if (entity.IsNew)

@@ -20,6 +20,7 @@ namespace freebyTech.Common.Data
         {
             builder.Ignore(p => p.IsNew);
             builder.Ignore(p => p.IsDirty);
+            builder.Ignore(p => p.IsDeleted);
 
             builder.Property(p => p.CreatedOn)
                 .Metadata.AfterSaveBehavior = PropertySaveBehavior.Ignore;
