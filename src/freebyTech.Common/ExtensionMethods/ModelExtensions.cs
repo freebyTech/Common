@@ -90,7 +90,7 @@ namespace freebyTech.Common.ExtensionMethods
         {
             if (entity.IsNew)
             {
-                return EntityState.Modified;
+                return EntityState.Added;
             }
             else if (entity.IsDirty)
             {
