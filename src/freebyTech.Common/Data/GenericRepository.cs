@@ -68,6 +68,7 @@ namespace freebyTech.Common.Data
         {
             entity.UpdateIfEdited(userName);
             _dbSet.Add(entity);
+            _dbContext.SaveChanges();
         }
 
         /// <summary>
@@ -78,6 +79,7 @@ namespace freebyTech.Common.Data
         {
             entity.UpdateIfEdited(userName);
             _dbSet.Attach(entity).State = EntityState.Modified;
+            _dbContext.SaveChanges();
         }
 
         /// <summary>
