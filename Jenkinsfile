@@ -3,7 +3,7 @@
 import com.freebyTech.BuildInfo
 import com.freebyTech.NugetPushOptionEnum
 
-String versionPrefix = '1.1'
+String versionPrefix = '1.2'
 String repository = 'freebytech'    
 String imageName = 'common'
 String dockerBuildArguments = ''
