@@ -34,4 +34,3 @@ RUN dotnet build -c Release -o /lib/release
 RUN dotnet pack -c Release -o /lib/nuget
 RUN whoami
 USER 1000
-RUN whoami
