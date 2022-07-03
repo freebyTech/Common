@@ -10,6 +10,6 @@ String dockerBuildArguments = ''
 
 node 
 {
-  build(this, versionPrefix, repository, imageName, dockerBuildArguments, false, false, NugetPushOptionEnum.PushDebug, 'freebyTech.Common')
+  build(this, versionPrefix, repository, imageName, dockerBuildArguments, true, false, NugetPushOptionEnum.PushDebug, 'freebyTech.Common')
 }
 
