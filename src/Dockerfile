@@ -1,4 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:3.1
+# Jenkins user.
+USER 1000
 WORKDIR /lib
 
 # copy csproj files and restore as distinct layers so we break cache as little as possible
@@ -32,5 +34,3 @@ RUN dotnet build -c Debug -o /lib/debug
 RUN dotnet pack -c Debug --include-symbols --include-source -o /lib/nuget_d -p:SymbolPackageFormat=snupkg
 RUN dotnet build -c Release -o /lib/release
 RUN dotnet pack -c Release -o /lib/nuget
-RUN whoami
-USER 1000
