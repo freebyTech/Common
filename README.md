@@ -1,15 +1,15 @@
 # Common
-Common Library for freebyTech Software written in .NET Core 2.1. Because it is written in .NET Core, this library can be run on Windows, Linux, or a Mac.
+Common Library for freebyTech Software written in .NET Core 3.1. Because it is written in .NET Core, this library can be run on Windows, Linux, or a Mac.
 
 Technologies currently used are:
 
-* .NET Core 2.1
+* .NET Core 3.1
 
 ## Installing Required Tools
 | Tool                               | URL                                              |
 | ---------------------------------- | ------------------------------------------------ |
 | Git for Windows                    | https://git-scm.com/download/win                 |
-| Install Latest .NET Core 2.1 SDK   | https://www.microsoft.com/net/download/windows   |
+| Install Latest .NET Core 3.1 SDK   | https://www.microsoft.com/net/download/windows   |
 | Install Latest LTS Version of Node | https://nodejs.org/en/                           |
 
 
