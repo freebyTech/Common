@@ -1,6 +1,4 @@
 FROM mcr.microsoft.com/dotnet/sdk:3.1
-# Jenkins user.
-USER 1000
 WORKDIR /lib
 
 # copy csproj files and restore as distinct layers so we break cache as little as possible
