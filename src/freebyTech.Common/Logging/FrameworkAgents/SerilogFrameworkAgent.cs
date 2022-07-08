@@ -20,8 +20,7 @@ namespace freebyTech.Common.Logging.FrameworkAgents
       var logger = Serilog.Log.Logger.ForContext("loggerName", loggerName)
       .ForContext("data", logEvent.Data)
       .ForContext("internalLog", AggregatePushLogItems(logEvent.PushLog))
-      .ForContext("messageType", logEvent.MessageType)
-      .ForContext("Exception", logEvent.Exception);
+      .ForContext("messageType", logEvent.MessageType);
 
       try
       {
