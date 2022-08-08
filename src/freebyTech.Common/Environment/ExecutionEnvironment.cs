@@ -15,6 +15,7 @@ namespace freebyTech.Common.Environment
     public ExecutionEnvironment(IEnvironmentManager environment, Assembly applicationAssembly) : this(environment)
     {
       ApplicationAssembly = applicationAssembly;
+      ApplicationInfo = ApplicationAssembly?.GetName();
     }
 
     public ExecutionEnvironment(IEnvironmentManager environment)
