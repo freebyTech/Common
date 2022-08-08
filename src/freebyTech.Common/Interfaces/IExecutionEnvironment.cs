@@ -1,4 +1,6 @@
-﻿namespace freebyTech.Common.Interfaces
+﻿using System.Reflection;
+
+namespace freebyTech.Common.Interfaces
 {
     public interface IExecutionEnvironment
     {
@@ -16,5 +18,15 @@
         /// The startup directory of the application, sometimes different than ServiceRootPath
         /// </summary>
         string StartupDirectory { get; }
+
+        /// <summary>
+        /// The Application Assembly
+        /// </summary>
+        public Assembly? ApplicationAssembly { get; }
+
+        /// <summary>
+        /// The AssemblyName of the Application
+        /// </summary>
+        public AssemblyName? ApplicationInfo { get; }
     }
 }
