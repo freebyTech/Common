@@ -112,5 +112,17 @@ namespace freebyTech.Common.ExtensionMethods
                 entry.State = ConvertState(stateInfo);
             }
         }
+
+        public static void ClearTrackedEntitiesModelStateAndDetach(this DbContext context)
+        {
+            foreach (var entry in context.ChangeTracker.Entries<IEditableModel>())
+            {
+                IEditableModel stateInfo = entry.Entity;
+                stateInfo.IsNew = false;
+                stateInfo.IsDirty = false;
+                stateInfo.IsDeleted = false;
+                entry.State = EntityState.Detached;
+            }
+        }
     }
 }

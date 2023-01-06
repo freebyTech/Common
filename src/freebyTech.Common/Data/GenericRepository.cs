@@ -91,6 +91,8 @@ namespace freebyTech.Common.Data
       _dbContext.ChangeTracker.DetectChanges();
       _dbContext.FixStateOfTrackedEntities(userName);
       _dbContext.SaveChanges();
+      // Needed because otherwise will attempt to partipate in any next transaction.
+      _dbContext.ClearTrackedEntitiesModelStateAndDetach();
     }
 
     #region Helper Methods
