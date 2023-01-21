@@ -5,6 +5,10 @@ namespace freebyTech.Common.ExtensionMethods
 {
   public static class EnvironmentExtensions
   {
+    public static bool IsLocal(this IExecutionEnvironment executionEnvironment)
+    {
+      return (executionEnvironment.EnvironmentName.CompareNoCase(ExecutionEnvironment.Local));
+    }
     public static bool IsDevelopment(this IExecutionEnvironment executionEnvironment)
     {
       return (executionEnvironment.EnvironmentName.CompareNoCase(ExecutionEnvironment.Development));

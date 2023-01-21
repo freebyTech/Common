@@ -11,6 +11,7 @@ namespace freebyTech.Common.Environment
     public const string Production = "Production";
     public const string Staging = "Staging";
     public const string Development = "Development";
+    public const string Local = "Local";
 
     public ExecutionEnvironment(IEnvironmentManager environment, Assembly applicationAssembly) : this(environment)
     {
