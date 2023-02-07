@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace freebyTech.Common.Data
 {
-  public class GenericRepository<TEntity> where TEntity : class, IEditableModel, IFindableByGuid
+  public class GenericRepository<TEntity, TIDType> where TEntity : class, IEditableModel, IFindableById<TIDType>
   {
     protected DbContext _dbContext;
     protected DbSet<TEntity> _dbSet;
@@ -41,7 +41,7 @@ namespace freebyTech.Common.Data
       return _dbSet.AsNoTracking();
     }
 
-    public TEntity FindById(Guid id)
+    public TEntity FindById(TIDType id)
     {
       return _dbSet.AsNoTracking().SingleOrDefault(i => i.Id == id);
     }
