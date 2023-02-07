@@ -4,8 +4,8 @@ using System.Text;
 
 namespace freebyTech.Common.Data.Interfaces
 {
-  public interface IFindableByGuid
+  public interface IFindableById<TIDType>
   {
-    Guid Id { get; set; }
+    TIDType Id { get; set; }
   }
 }
