@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace freebyTech.Common.Data
 {
-  public class GenericRepository<TEntity, TIDType> where TEntity : class, IEditableModel, IFindableById<TIDType>
+  public class GenericRepository<TEntity, TIDType>
+    where TEntity : class, IEditableModel, IFindableById<TIDType>
+    where TIDType : class
   {
     protected DbContext _dbContext;
     protected DbSet<TEntity> _dbSet;
