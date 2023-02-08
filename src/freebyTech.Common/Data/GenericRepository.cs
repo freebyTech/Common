@@ -8,9 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace freebyTech.Common.Data
 {
-  public class GenericRepository<TEntity, TIDType>
-    where TEntity : class, IEditableModel, IFindableById<TIDType>
-    where TIDType : class
+  public class GenericRepository<TEntity, TIDType> where TEntity : class, IEditableModel, IFindableById<TIDType>
   {
     protected DbContext _dbContext;
     protected DbSet<TEntity> _dbSet;
@@ -45,7 +43,7 @@ namespace freebyTech.Common.Data
 
     public TEntity FindById(TIDType id)
     {
-      return _dbSet.AsNoTracking().SingleOrDefault(i => i.Id == id);
+      return _dbSet.AsNoTracking().SingleOrDefault(i => EqualityComparer<TIDType>.Default.Equals(i.Id, id));
     }
 
     public IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
