@@ -43,7 +43,7 @@ namespace freebyTech.Common.Data
 
     public TEntity FindById(TIDType id)
     {
-      return _dbSet.AsNoTracking().SingleOrDefault(i => EqualityComparer<TIDType>.Default.Equals(i.Id, id));
+      return _dbSet.AsNoTracking().SingleOrDefault(i => i.Id.Equals(id));
     }
 
     public IEnumerable<TEntity> FindBy(Expression<Func<TEntity, bool>> predicate)
