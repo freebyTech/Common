@@ -18,8 +18,8 @@ namespace freebyTech.Common.Data
       builder.Ignore(p => p.IsDeleted);
 
       builder.Property(o => o.Ts).IsRowVersion();
-      builder.Property(o => o.ModifiedBy).HasMaxLength(100).IsRequired();
-      builder.Property(o => o.ModifiedOn).IsRequired();
+      builder.Property(o => o.ModifiedBy).HasMaxLength(100);
+      builder.Property(o => o.ModifiedOn);
       builder.Property(o => o.CreatedBy).HasMaxLength(100).IsRequired().Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
       builder.Property(o => o.CreatedOn).IsRequired().Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
     }
