@@ -5,7 +5,7 @@ using freebyTech.Common.Data.Interfaces;
 using freebyTech.Common.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace APP_NAME.Model.Entities.Utility;
+namespace freebyTech.Common.Entities.Utility;
 
 /// <summary>
 /// The entity used to store runtime application settings in the database.
