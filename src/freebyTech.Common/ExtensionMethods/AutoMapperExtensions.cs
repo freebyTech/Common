@@ -26,13 +26,13 @@ public static class AutoMapperExtensions
     where TResource : IEditableResource, new()
   {
     profile
-      .CreateMap<TEntity, TEntity>()
+      .CreateMap<TEntity, TResource>()
       .ForMember(dest => dest.CreatedOn, opt => opt.Ignore())
       .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
       .ForMember(dest => dest.ModifiedOn, opt => opt.Ignore())
       .ForMember(dest => dest.ModifiedBy, opt => opt.Ignore());
     profile
-      .CreateMap<TEntity, TEntity>()
+      .CreateMap<TResource, TEntity>()
       .ForMember(dest => dest.CreatedOn, opt => opt.Ignore())
       .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
       .ForMember(dest => dest.ModifiedOn, opt => opt.Ignore())
