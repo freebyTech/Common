@@ -38,4 +38,12 @@ public partial class AppSettingResource : BaseResource<int>
   /// The name.
   /// </value>
   public string Level { get; set; }
+
+  /// <summary>
+  /// Gets or sets the type for this application setting.
+  /// </summary>
+  /// <value>
+  /// The type.
+  /// </value>
+  public string Type { get; set; }
 }
