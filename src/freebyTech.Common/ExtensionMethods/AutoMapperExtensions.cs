@@ -9,7 +9,7 @@ public static class AutoMapperExtensions
   /// Will create a standard resource to entity mapping.
   /// </summary>
   /// <returns></returns>
-  public static void CreateResourceToEntityMap<TEntity, TResource>(this Profile profile, TEntity entity, TResource resource)
+  public static void CreateResourceToEntityMap<TEntity, TResource>(this Profile profile)
     where TEntity : IEditableModel, new()
     where TResource : IEditableModel, new()
   {
@@ -21,7 +21,7 @@ public static class AutoMapperExtensions
   /// Will create a standard resource to entity mapping.
   /// </summary>
   /// <returns></returns>
-  public static void CreateSimpleResourceViewToEntityMap<TEntity, TResource>(this Profile profile, TEntity entity, TResource resource)
+  public static void CreateSimpleResourceViewToEntityMap<TEntity, TResource>(this Profile profile)
     where TEntity : IEditableModel, new()
     where TResource : IEditableResource, new()
   {
