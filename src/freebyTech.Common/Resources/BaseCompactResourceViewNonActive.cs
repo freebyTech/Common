@@ -8,7 +8,7 @@ namespace freebyTech.Common.Resources;
 /// the standard format, it compact that information into the Lut property.
 /// Simplifying the return of data for less size.
 /// </summary>
-public class BaseCompactResourceViewNonActive<IDType> : IEditableResource
+public class BaseCompactResourceViewNonActive<IDType> : ICompactEditableResource
 {
   /// <summary>
   /// Gets or sets the identifier.
