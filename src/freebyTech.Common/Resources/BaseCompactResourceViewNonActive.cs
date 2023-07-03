@@ -4,10 +4,11 @@ using freebyTech.Common.Data.Interfaces;
 namespace freebyTech.Common.Resources;
 
 /// <summary>
-/// The Base Simple Resource View which doesn't contain DB write time and user information.
+/// The Compact Resource View of an entity. It doesn't contain DB write time and user information in
+/// the standard format, it compact that information into the Lut property.
 /// Simplifying the return of data for less size.
 /// </summary>
-public class BaseSimpleResourceViewNonActive<IDType> : IEditableResource
+public class BaseCompactResourceViewNonActive<IDType> : IEditableResource
 {
   /// <summary>
   /// Gets or sets the identifier.
@@ -21,6 +22,11 @@ public class BaseSimpleResourceViewNonActive<IDType> : IEditableResource
   /// The timestamp of the last record write.
   /// </summary>
   public byte[]? Ts { get; set; }
+
+  /// <summary>
+  /// Compact form of the last upate time, used for easier comparison of date times.
+  /// </summary>
+  public long Lut { get; set; }
 
   #region State Properties Not Saved to the Database
   public bool IsNew { get; set; }
