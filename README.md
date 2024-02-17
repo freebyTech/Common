@@ -13,6 +13,7 @@ Technologies currently used are:
 | Git for Windows                    | https://git-scm.com/download/win               |
 | Install Latest .NET 6.0 SDK        | https://www.microsoft.com/net/download/windows |
 | Install Latest LTS Version of Node | https://nodejs.org/en/                         |
+| GitHub Command Line                | https://cli.github.com/                        |
 
 # Building this project
 
