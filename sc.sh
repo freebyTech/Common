@@ -19,4 +19,4 @@ echo "     Do the following: 1) Run 'git pull --rebase origin/develop' to get la
   Analyze how these changes affect our infrastructure setup, 4) Update README.md to reflect the current state of the infrastructure"
 
 # Send the initial message to Claude Code
-claude "Please read README.md and more importantly the CONTEXT.md for full context of this repository. The CONTEXT.md is your file to maintain your memory of this project."
+claude "Please read README.md and more importantly the CURRENT_CONTEXT.md for full context of this repository. The CURRENT_CONTEXT.md is your file to maintain your memory of this project."
