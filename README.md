@@ -1,17 +1,17 @@
 # Common
 
-Common Library for freebyTech Software written in .NET 6.0. Because it is written in .NET 6.0, this library can be run on Windows, Linux, or a Mac.
+Common Library for freebyTech Software written in .NET 10.0. Because it is written in .NET 10.0, this library can be run on Windows, Linux, or a Mac.
 
 Technologies currently used are:
 
-- .NET 6.0
+- .NET 10.0
 
 ## Installing Required Tools
 
 | Tool                               | URL                                            |
 | ---------------------------------- | ---------------------------------------------- |
 | Git for Windows                    | https://git-scm.com/download/win               |
-| Install Latest .NET 6.0 SDK        | https://www.microsoft.com/net/download/windows |
+| Install Latest .NET 10.0 SDK       | https://www.microsoft.com/net/download/windows |
 | Install Latest LTS Version of Node | https://nodejs.org/en/                         |
 | GitHub Command Line                | https://cli.github.com/                        |
 
