@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using freebyTech.Common.Messaging.Slack.Model;
@@ -8,6 +8,8 @@ namespace freebyTech.Common.Messaging.Slack
 {
   public class SlackMessenger
   {
+    private static readonly HttpClient _httpClient = new HttpClient();
+
     public string ApiBaseUrl { get; private set; }
 
     public SlackMessenger()
@@ -22,41 +24,19 @@ namespace freebyTech.Common.Messaging.Slack
 
     public SlackResponse PostMessage(SlackMessage message)
     {
-      var httpWebRequest = HttpWebRequest.Create(string.Format("{0}/chat.postMessage", ApiBaseUrl));
-      SlackResponse response = null;
-
-      // At the moment, slack does not support json encoded bodies in messages WHICH IS REALLY REALLY CRAZY, everything has to be URI encoded. Who knew!
-      //httpWebRequest.ContentType = "application/json";
-      //httpWebRequest.Method = "POST";
-
-      //using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-      //{
-      //    var json = JsonConvert.SerializeObject(message);
-
-      //    streamWriter.Write(json);
-      //    streamWriter.Flush();
-      //}
-
-      ASCIIEncoding ascii = new ASCIIEncoding();
+      // At the moment, Slack does not support JSON-encoded bodies in messages; everything has to be
+      // URI (form) encoded and posted as application/x-www-form-urlencoded.
       var messageEncoded = message.EncodeAsURI();
-      byte[] postBytes = ascii.GetBytes(messageEncoded);
+      using var content = new StringContent(messageEncoded, Encoding.ASCII);
+      content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
 
-      httpWebRequest.Method = "POST";
-      httpWebRequest.ContentType = "application/x-www-form-urlencoded";
-      httpWebRequest.ContentLength = postBytes.Length;
-      using (var stream = httpWebRequest.GetRequestStream())
-      {
-        stream.Write(postBytes, 0, postBytes.Length);
-        stream.Flush();
-      }
+      using var httpResponse = _httpClient
+        .PostAsync($"{ApiBaseUrl}/chat.postMessage", content)
+        .GetAwaiter()
+        .GetResult();
 
-      var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-      using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-      {
-        var result = streamReader.ReadToEnd();
-        response = JsonSerializer.Deserialize<SlackResponse>(result);
-      }
-      return response;
+      var result = httpResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+      return JsonSerializer.Deserialize<SlackResponse>(result)!;
     }
   }
 }

@@ -9,7 +9,7 @@ namespace freebyTech.Common.Data.Interfaces
   /// </summary>
   public interface IEditableResource
   {
-    byte[] Ts { get; set; }
+    byte[]? Ts { get; set; }
 
     // This properties are added after the fact by scaffolding and are used as non entity framework specific state information
     // used by the client UI for change tracking.

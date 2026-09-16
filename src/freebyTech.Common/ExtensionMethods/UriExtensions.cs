@@ -13,7 +13,16 @@ namespace freebyTech.Common.ExtensionMethods
     [DebuggerStepThrough]
     public static Uri Append(this Uri uri, params string[] paths)
     {
-        return new Uri(paths.Aggregate(uri.AbsoluteUri, (current, path) => string.Format("{0}/{1}", current.TrimEnd('/'), Uri.EscapeUriString(path.TrimStart('/').TrimEnd('/')))));
+        return new Uri(paths.Aggregate(uri.AbsoluteUri, (current, path) => string.Format("{0}/{1}", current.TrimEnd('/'), EscapePathSegments(path.TrimStart('/').TrimEnd('/')))));
+    }
+
+    /// <summary>
+    /// Escapes each path segment via <see cref="Uri.EscapeDataString"/> while preserving the
+    /// '/' separators between segments. Replaces the obsolete <c>Uri.EscapeUriString</c> for path components.
+    /// </summary>
+    private static string EscapePathSegments(string path)
+    {
+        return string.Join('/', path.Split('/').Select(Uri.EscapeDataString));
     }
   }
 }

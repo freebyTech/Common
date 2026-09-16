@@ -36,7 +36,7 @@ namespace freebyTech.Common.Configuration
         /// </summary>
         public override void Load()
         {
-            var data = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var data = new Dictionary<string, string?>(StringComparer.OrdinalIgnoreCase);
 
             using (var enumerator = Args.GetEnumerator())
             {
