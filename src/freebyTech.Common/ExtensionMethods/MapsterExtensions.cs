@@ -38,10 +38,16 @@ public static class MapsterExtensions
   {
     config
       .NewConfig<TResource, TEntity>()
-      .Ignore(dest => dest.CreatedOn, dest => dest.CreatedBy, dest => dest.ModifiedOn, dest => dest.ModifiedBy);
+      // String member names (not dest => dest.X): Mapster can't parse a member-access lambda
+      // through a generic interface-typed parameter (throws "Allow only member access").
+      .Ignore("CreatedOn", "CreatedBy", "ModifiedOn", "ModifiedBy");
     config
       .NewConfig<TEntity, TResource>()
-      .Map(dest => dest.Lut, src => src.ModifiedOn != null ? src.ModifiedOn.Value.Ticks : src.CreatedOn.Ticks);
+      // Use the string destination-member overload rather than dest => dest.Lut: Mapster cannot
+      // parse a member-access lambda through a generic interface-typed parameter (it throws
+      // "Allow only member access"). The string form registers Lut as a mapped member so it
+      // satisfies RequireDestinationMemberSource.
+      .Map("Lut", src => src.ModifiedOn != null ? src.ModifiedOn.Value.Ticks : src.CreatedOn.Ticks);
   }
 
   /// <summary>
@@ -73,7 +79,11 @@ public static class MapsterExtensions
   {
     return config
       .NewConfig<TEntity, TResource>()
-      .Map(dest => dest.Lut, src => src.ModifiedOn != null ? src.ModifiedOn.Value.Ticks : src.CreatedOn.Ticks);
+      // Use the string destination-member overload rather than dest => dest.Lut: Mapster cannot
+      // parse a member-access lambda through a generic interface-typed parameter (it throws
+      // "Allow only member access"). The string form registers Lut as a mapped member so it
+      // satisfies RequireDestinationMemberSource.
+      .Map("Lut", src => src.ModifiedOn != null ? src.ModifiedOn.Value.Ticks : src.CreatedOn.Ticks);
   }
 
   /// <summary>
@@ -86,6 +96,8 @@ public static class MapsterExtensions
   {
     return config
       .NewConfig<TResource, TEntity>()
-      .Ignore(dest => dest.CreatedOn, dest => dest.CreatedBy, dest => dest.ModifiedOn, dest => dest.ModifiedBy);
+      // String member names (not dest => dest.X): Mapster can't parse a member-access lambda
+      // through a generic interface-typed parameter (throws "Allow only member access").
+      .Ignore("CreatedOn", "CreatedBy", "ModifiedOn", "ModifiedBy");
   }
 }
