@@ -86,17 +86,17 @@ namespace freebyTech.Common.ExtensionMethods
 
     private static EntityState ConvertState(IEditableModel entity)
     {
-      if (entity.IsNew)
+      if (entity.IsDeleted)
+      {
+        return EntityState.Deleted;
+      }
+      else if (entity.IsNew)
       {
         return EntityState.Added;
       }
       else if (entity.IsDirty)
       {
         return EntityState.Modified;
-      }
-      else if (entity.IsDeleted)
-      {
-        return EntityState.Deleted;
       }
       return EntityState.Unchanged;
     }
