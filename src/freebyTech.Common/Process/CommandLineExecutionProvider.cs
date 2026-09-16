@@ -94,9 +94,12 @@ namespace freebyTech.Common.Process
                         process.EnableRaisingEvents = true;
 
 
-                        // attach the event handler for OutputDataReceived before starting the process
-                        process.OutputDataReceived += (sender, eventArgs) => outputBuilder.AppendLine(eventArgs.Data);
-                        process.ErrorDataReceived += (sender, eventArgs) => outputBuilder.AppendLine(eventArgs.Data);
+                        // attach the event handlers for OutputDataReceived / ErrorDataReceived before starting the process.
+                        // Both callbacks arrive on separate thread-pool threads and StringBuilder is not thread-safe, so
+                        // serialize the appends — a concurrent append corrupts the builder and throws inside the callback,
+                        // which (being an unhandled thread-pool exception) tears down the host process.
+                        process.OutputDataReceived += (sender, eventArgs) => { lock (outputBuilder) { outputBuilder.AppendLine(eventArgs.Data); } };
+                        process.ErrorDataReceived += (sender, eventArgs) => { lock (outputBuilder) { outputBuilder.AppendLine(eventArgs.Data); } };
                         // start the process
                         // then begin asynchronously reading the output
                         // then wait for the process to exit
@@ -118,10 +121,14 @@ namespace freebyTech.Common.Process
                             process.WaitForExit();
                         }
                         process.CancelOutputRead();
+                        process.CancelErrorRead();
                     }
                 }
 
-                return outputBuilder.ToString();
+                lock (outputBuilder)
+                {
+                    return outputBuilder.ToString();
+                }
             }
             catch (InvalidOperationException)
             {
